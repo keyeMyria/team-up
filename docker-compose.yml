@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: "team-up-postgres"
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'team-up'
+    labels:
+      application: "team-up-postgres"
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    container_name: "team-up-redis"
+    labels:
+      application: "team-up-redis"
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
