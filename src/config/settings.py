@@ -16,6 +16,7 @@ import dotenv
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_DIR = os.path.dirname(os.path.abspath(__file__))
+
 dotenv.load_dotenv(os.path.join(CONFIG_DIR, 'local.env'))
 
 
@@ -30,6 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
 
@@ -40,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # My apps
+    'accounts.apps.AccountsConfig'
 ]
+
 
 if DEBUG:
     INSTALLED_APPS += [
