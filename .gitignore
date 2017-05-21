@@ -61,3 +61,4 @@ celerybeat-schedule
 # Rope project settings
 .ropeproject
 .idea/
+.DS_Store
