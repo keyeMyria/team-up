@@ -19,7 +19,6 @@ CONFIG_DIR = os.path.dirname(os.path.abspath(__file__))
 
 dotenv.load_dotenv(os.path.join(CONFIG_DIR, 'local.env'))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -42,11 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    # 3rd party apps
+    'rest_framework',
+    'channels',
+    'channels_api',
     # My apps
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'chat.apps.ChatConfig',
 ]
-
 
 if DEBUG:
     INSTALLED_APPS += [
@@ -88,7 +90,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -133,7 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -147,7 +147,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -155,6 +154,16 @@ STATIC_URL = '/static/'
 
 INTERNAL_IPS = ['127.0.0.1']
 
+# Channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "ROUTING": "config.routing.channel_routing",
+        'config': {
+            'hosts': [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))]
+        }
+    },
+}
 
 # CELERY
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER')
