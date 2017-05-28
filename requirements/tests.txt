@@ -1,2 +1,2 @@
 pytest==3.0.7
-pytest-django==3.1.2
+-e git+https://github.com/gradam/pytest-django.git@8b456077d78c9db75a10087193536ee4f86ebc51#egg=pytest_django
