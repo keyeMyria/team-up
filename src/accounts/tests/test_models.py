@@ -28,23 +28,26 @@ class TestUserNameValidator:
 
 
 class TestUserModel:
-    @pytest.fixture
-    def user(self):
-        return User(username='ziemniak', email='ziemniak@ziemniak.com')
 
-    def test_user(self, user):
+    def test_user(self, normal_user):
         pass
 
-    def test_short_name(self, user):
-        assert user.get_short_name() == user.username
-        user.first_name = 'someone'
-        assert user.get_short_name() == user.first_name
+    @pytest.mark.django_db
+    def test_save_model(self, normal_user):
+        normal_user.save()
 
-    def test_full_name(self, user):
-        assert user.get_full_name() == user.username
-        user.first_name = 'someone'
-        user.last_name = 'someone'
-        assert user.get_full_name() == 'someone someone'
+    def test_short_name(self, normal_user):
+        normal_user.first_name = None
+        assert normal_user.get_short_name() == normal_user.username
+        normal_user.first_name = 'someone'
+        assert normal_user.get_short_name() == normal_user.first_name
+
+    def test_full_name(self, normal_user):
+        normal_user.first_name = None
+        assert normal_user.get_full_name() == normal_user.username
+        normal_user.first_name = 'someone'
+        normal_user.last_name = 'someone'
+        assert normal_user.get_full_name() == 'someone someone'
 
 
 @pytest.mark.django_db

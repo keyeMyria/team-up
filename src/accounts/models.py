@@ -88,7 +88,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Other fields
     gender = models.CharField(max_length=1, choices=GENDERS, blank=True, null=True)
-    birthday = models.DateField(blank=True, null=True)
+    birthdate = models.DateField(blank=True, null=True)
 
     objects = UserManager()
 

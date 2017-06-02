@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # My apps
     'accounts.apps.AccountsConfig',
     'chat.apps.ChatConfig',
+    'common.apps.CommonConfig'
 ]
 
 if DEBUG:
