@@ -1,13 +1,18 @@
 import re
+
+import arrow
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from dateutil.relativedelta import relativedelta
-import arrow
+
+from userprofiles.models import UserProfile
 
 
 def username_validator(username):
@@ -120,7 +125,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         return full_name.strip()
 
     def get_short_name(self):
-        "Returns the short name for the user."
+        """
+        Returns the short name for the user.
+        """
         if self.first_name:
             return self.first_name
         return self.username
@@ -130,3 +137,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+@receiver(post_save, sender=User)
+def create_related_models(sender, instance, created=False, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
