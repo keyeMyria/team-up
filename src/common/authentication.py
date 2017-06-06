@@ -60,6 +60,8 @@ def rest_auth(func):
         # Make sure there's a session key
         # Run the consumer
         result = func(message, *args, **kwargs)
+        if message.channel.name.endswith('disconnect'):
+            return None
         return result
 
     return inner
@@ -67,7 +69,7 @@ def rest_auth(func):
 
 def rest_token_user(func):
     """
-saf    Wraps a HTTP or WebSocket consumer (or any consumer of messages
+    Wraps a HTTP or WebSocket consumer (or any consumer of messages
     that provides a "COOKIES" attribute) to provide both a "session"
     attribute and a "user" attibute, like AuthMiddleware does.
     This runs http_session() to get a session to hook auth off of.
@@ -87,7 +89,15 @@ saf    Wraps a HTTP or WebSocket consumer (or any consumer of messages
 
 
 class RestTokenConsumerMixin:
-    rest_user = False
+    """
+    Authenticate user with token.
+    This mixin has to be passed as the first parent in class definition.
+    Pass the token as query parameter eg.
+    ws://127.0.0.1:8000/chat/?token=<your_token>
+    """
+    rest_user = True
+    #  This has to be True in order to keep information about the user
+    http_user = True
 
     def get_handler(self, message, **kwargs):
         handler = super(RestTokenConsumerMixin, self).get_handler(message, **kwargs)
