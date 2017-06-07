@@ -47,6 +47,7 @@ class LeagueOfLegendsAccount(GameAccount):
     class Meta:
         verbose_name = 'League of Legends account'
         verbose_name_plural = 'League of Legends accounts'
+        unique_together = (('username', 'server'),)
 
     def __str__(self):
         return self.username

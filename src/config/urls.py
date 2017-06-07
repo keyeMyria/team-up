@@ -17,11 +17,15 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 
+api_urlpatterns = [
+    url(r'^games/', include('games.urls', namespace='games')),
+    url(r'^userprofiles/', include('userprofiles.urls', namespace='userprofiles')),
+]
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
-    url(r'^api/games/', include('games.urls', namespace='api-games')),
-    url(r'^api/userprofiles/', include('userprofiles.urls', namespace='api-userprofiles')),
+    url(r'^api/', include(api_urlpatterns, namespace='api')),
 ]
 
 
