@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'rest_framework_social_oauth2',
     'rest_framework',
     'channels',
+    'django_filters',
     # My apps
     'accounts.apps.AccountsConfig',
     'chat.apps.ChatConfig',

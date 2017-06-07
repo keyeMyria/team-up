@@ -11,4 +11,3 @@ def normal_user():
 @pytest.fixture
 def admin_user():
     return generate_user(is_superuser=True)
-

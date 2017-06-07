@@ -24,12 +24,29 @@ class LeagueOfLegendsAccount(GameAccount):
         (2, 'II'),
         (3, 'III'),
         (4, 'IV'),
-        (5, 'V'),
+        (5, 'V')
+    )
+    SERVER_CHOICES = (
+        (1, _('North America')),
+        (2, _('EU West')),
+        (3, _('EU Nordic & East')),
+        (4, _('Latin America North')),
+        (5, _('Latin America South')),
+        (6, _('Brazil')),
+        (7, _('Turkey')),
+        (8, _('Russia')),
+        (9, _('Oceania')),
+        (10, _('Japan')),
+        (11, _('Korea')),
     )
 
     league = models.PositiveIntegerField(_('User\'s league'), choices=LEAGUE_CHOICES)
     division = models.PositiveIntegerField(_('User\'s division'), choices=DIVISION_CHOICES)
+    server = models.PositiveIntegerField(_('User\'s server'), choices=SERVER_CHOICES)
 
     class Meta:
         verbose_name = 'League of Legends account'
         verbose_name_plural = 'League of Legends accounts'
+
+    def __str__(self):
+        return self.username

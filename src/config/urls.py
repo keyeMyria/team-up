@@ -20,6 +20,8 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
+    url(r'^api/games/', include('games.urls', namespace='api-games')),
+    url(r'^api/userprofiles/', include('userprofiles.urls', namespace='api-userprofiles')),
 ]
 
 
