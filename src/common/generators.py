@@ -17,9 +17,9 @@ def generate_user(is_superuser=False):
     email = simple_profile['mail']
     gender = simple_profile['sex']
 
-    return User(username=username, first_name=first_name, last_name=last_name, email=email,
-                is_superuser=is_superuser, is_staff=is_superuser, birthdate=birthdate,
-                gender=gender)
+    return User.objects.create(username=username, first_name=first_name, last_name=last_name,
+                               email=email, is_superuser=is_superuser, is_staff=is_superuser,
+                               birthdate=birthdate, gender=gender)
 
 
 def generate_room():
