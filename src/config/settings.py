@@ -23,6 +23,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',  # Must be before contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,6 +38,12 @@ INSTALLED_APPS = [
     'channels',
     'django_filters',
     'rest_framework_swagger',
+    'health_check',  # required
+    'health_check.db',  # stock Django health checkers
+    'health_check.cache',
+    # 'health_check.storage',
+    # 'health_check.contrib.celery',  # requires celery
+    # 'health_check.contrib.s3boto_storage',
     # My apps
     'accounts.apps.AccountsConfig',
     'chat.apps.ChatConfig',

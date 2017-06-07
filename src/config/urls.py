@@ -35,9 +35,11 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='documentation', permanent=False)),
     url(r'^docs/$', schema_view, name='documentation'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
     url(r'^api/', include(api_urlpatterns, namespace='api')),
+    url(r'^health/', include('health_check.urls')),
 ]
 
 
