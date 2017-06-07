@@ -1,9 +1,12 @@
+from random import randint
+
 from faker import Faker
 import arrow
 
 from django.db.utils import IntegrityError
 from accounts.models import User
 from chat.models import Room, Message
+from games.models import LeagueOfLegendsAccount
 
 
 def generate_user(is_superuser=False):
@@ -40,3 +43,21 @@ def generate_message(user=None, room=None):
     room.users.add(user)
     content = Faker().text(max_nb_chars=100)
     return Message(room=room, sender=user, content=content)
+
+
+def generate_league_of_legends_account_data(credentials=None) -> dict:
+    if not None:
+        credentials = {}
+
+    league_choices = LeagueOfLegendsAccount.LEAGUE_CHOICES
+    division_choices = LeagueOfLegendsAccount.DIVISION_CHOICES
+    server_choices = LeagueOfLegendsAccount.SERVER_CHOICES
+
+    fake = Faker()
+    data = dict()
+    data['username'] = credentials.get('username', fake.user_name())
+    data['league'] = credentials.get('league', randint(1, len(league_choices)))
+    data['division'] = credentials.get('division', randint(1, len(division_choices)))
+    data['server'] = credentials.get('server', randint(1, len(server_choices)))
+
+    return data

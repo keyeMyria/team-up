@@ -10,7 +10,7 @@ class LeagueOfLegendsAccountSerializer(HyperlinkedModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'url': {
-                'view_name': 'api-games:league_of_legends-detail',
+                'view_name': 'api:games:league_of_legends-detail',
                 'lookup_field': 'pk'
             },
         }
