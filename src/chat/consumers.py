@@ -1,12 +1,15 @@
 from channels.generic.websockets import JsonWebsocketConsumer
+
 from common.authentication import RestTokenConsumerMixin
+from common.mixins import KeepUserConsumerMixin
 
 
-class MyConsumer(RestTokenConsumerMixin, JsonWebsocketConsumer):
+class ChatConsumer(RestTokenConsumerMixin,
+                   KeepUserConsumerMixin,
+                   JsonWebsocketConsumer):
 
     # Set to True if you want it, else leave it out
     strict_ordering = False
-    http_user = True
 
     def connection_groups(self, **kwargs):
         """
@@ -19,14 +22,17 @@ class MyConsumer(RestTokenConsumerMixin, JsonWebsocketConsumer):
         """
         Perform things on connection start
         """
-        self.message.reply_channel.send({"accept": True})
+        if message.user is not None and message.user.is_authenticated():
+            message.reply_channel.send({"accept": True})
+        else:
+            self.close({'Error': 'Not authenticated user'})
 
     def receive(self, content, **kwargs):
         """
         Called when a message is received with decoded JSON content
         """
         # Simple echo
-        self.send(self.message.user.username)
+        self.send(self.user.username)
 
     def disconnect(self, message, **kwargs):
         """

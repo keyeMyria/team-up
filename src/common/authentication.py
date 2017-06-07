@@ -57,13 +57,8 @@ def rest_auth(func):
                     user, auth = user_auth_tuple
                     break
         message.user, message.auth = user, auth
-        # Make sure there's a session key
-        # Run the consumer
         result = func(message, *args, **kwargs)
-        if message.channel.name.endswith('disconnect'):
-            return None
         return result
-
     return inner
 
 
@@ -97,15 +92,9 @@ class RestTokenConsumerMixin:
     """
     rest_user = True
     #  This has to be True in order to keep information about the user
-    http_user = True
 
     def get_handler(self, message, **kwargs):
         handler = super(RestTokenConsumerMixin, self).get_handler(message, **kwargs)
         if self.rest_user:
             handler = rest_token_user(handler)
         return handler
-
-    def connect(self, message, **kwargs):
-        if self.rest_user and not self.message.user:
-            self.close()
-        return message
