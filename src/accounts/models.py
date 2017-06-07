@@ -109,8 +109,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Returns user age in years
         """
-        if self.birthday:
-            return relativedelta(timezone.now(), arrow.get(self.birthday).datetime).years
+        if self.birthdate:
+            return relativedelta(timezone.now(), arrow.get(self.birthdate).datetime).years
         else:
             return None
 

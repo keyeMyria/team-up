@@ -16,6 +16,15 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.decorators import user_passes_test
+from django.views.generic import RedirectView
+
+from rest_framework_swagger.views import get_swagger_view
+
+from common.permissions import is_admin
+
+
+schema_view = user_passes_test(is_admin)(get_swagger_view(title='VeeU API'))
 
 api_urlpatterns = [
     url(r'^games/', include('games.urls', namespace='games')),
@@ -23,6 +32,9 @@ api_urlpatterns = [
 ]
 
 urlpatterns = [
+    url(r'^$', RedirectView.as_view(pattern_name='documentation', permanent=False)),
+    url(r'^docs/$', schema_view, name='documentation'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
     url(r'^api/', include(api_urlpatterns, namespace='api')),

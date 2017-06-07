@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'channels',
     'django_filters',
+    'rest_framework_swagger',
     # My apps
     'accounts.apps.AccountsConfig',
     'chat.apps.ChatConfig',
@@ -149,6 +150,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 INTERNAL_IPS = ['127.0.0.1']
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
+LOGIN_REDIRECT_URL = 'documentation'
 
 # Rest framework
 REST_FRAMEWORK = {

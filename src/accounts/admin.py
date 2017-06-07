@@ -10,13 +10,13 @@ class UserAdmin(AuthUserAdmin):
         (None, {'fields': ('password', 'username', 'email')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
                                     'groups', 'user_permissions')}),
-        ('Additional', {'fields': ('gender', 'birthday')}),
+        ('Additional', {'fields': ('gender', 'birthdate')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {'fields': ('password1', 'password2', 'username', 'email')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
-        ('Additional', {'fields': ('gender', 'birthday')})
+        ('Additional', {'fields': ('gender', 'birthdate')})
     )
     form = UserChangeForm
     add_form = UserCreationForm
