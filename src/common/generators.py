@@ -1,6 +1,7 @@
 from faker import Faker
 import arrow
 
+from django.db.utils import IntegrityError
 from accounts.models import User
 from chat.models import Room, Message
 
@@ -8,18 +9,21 @@ from chat.models import Room, Message
 def generate_user(is_superuser=False):
     fake = Faker()
 
-    first_name = fake.first_name()
-    last_name = fake.last_name()
-    simple_profile = fake.simple_profile()
-    username = simple_profile['username']
-    birthdate = simple_profile['birthdate']
-    birthdate = arrow.get(birthdate).datetime
-    email = simple_profile['mail']
-    gender = simple_profile['sex']
-
-    return User.objects.create(username=username, first_name=first_name, last_name=last_name,
-                               email=email, is_superuser=is_superuser, is_staff=is_superuser,
-                               birthdate=birthdate, gender=gender)
+    while True:
+        first_name = fake.first_name()
+        last_name = fake.last_name()
+        simple_profile = fake.simple_profile()
+        username = simple_profile['username']
+        birthdate = simple_profile['birthdate']
+        birthdate = arrow.get(birthdate).datetime
+        email = simple_profile['mail']
+        gender = simple_profile['sex']
+        try:
+            return User.objects.create(username=username, first_name=first_name,
+                                       last_name=last_name, email=email, is_superuser=is_superuser,
+                                       is_staff=is_superuser, birthdate=birthdate, gender=gender)
+        except IntegrityError:
+            pass
 
 
 def generate_room():
