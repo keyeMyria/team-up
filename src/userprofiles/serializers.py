@@ -1,8 +1,6 @@
 from userprofiles.models import UserProfile
 
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer,
-)
+from rest_framework.serializers import HyperlinkedModelSerializer
 
 
 class UserProfileSerializer(HyperlinkedModelSerializer):
