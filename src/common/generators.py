@@ -54,10 +54,11 @@ def generate_league_of_legends_account_data(credentials=None) -> dict:
     server_choices = LeagueOfLegendsAccount.SERVER_CHOICES
 
     fake = Faker()
-    data = dict()
-    data['username'] = credentials.get('username', fake.user_name())
-    data['league'] = credentials.get('league', randint(1, len(league_choices)))
-    data['division'] = credentials.get('division', randint(1, len(division_choices)))
-    data['server'] = credentials.get('server', randint(1, len(server_choices)))
+    data = {
+        'username': credentials.get('username', fake.user_name()),
+        'league': credentials.get('league', randint(1, len(league_choices))),
+        'division': credentials.get('division', randint(1, len(division_choices))),
+        'server': credentials.get('server', randint(1, len(server_choices)))
+    }
 
     return data

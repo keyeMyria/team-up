@@ -4,26 +4,14 @@ from django.core.urlresolvers import reverse
 from django.test import Client
 
 from common.generators import generate_league_of_legends_account_data
-from common.testing import auth_headers
-from accounts.models import User
+from common.testing import BaseViewTest
 from games.models import LeagueOfLegendsAccount
 
 
-class BaseTestAccountViewSet:
+class BaseTestAccountViewSet(BaseViewTest):
     view_name = ''
     gen_func = None
-
-    @pytest.fixture
-    def normal_user_auth(self, normal_user: User):
-        return auth_headers(normal_user)
-
-    @pytest.fixture
-    def admin_user_auth(self, admin_user: User):
-        return auth_headers(admin_user)
-
-    @pytest.fixture
-    def list_url(self):
-        return reverse(f'{self.view_name}-list')
+    model = None
 
     @pytest.fixture
     def new_acc_data(self):
@@ -33,7 +21,7 @@ class BaseTestAccountViewSet:
     def _new_instance(self) -> dict:
         d = {}
         acc_data = self.gen_func()
-        instance = LeagueOfLegendsAccount.objects.create(**acc_data)
+        instance = self.model.objects.create(**acc_data)
         d['acc_data'] = acc_data
         d['instance'] = instance
         d['detail_url'] = reverse(f'{self.view_name}-detail', kwargs={'pk': instance.pk})
@@ -53,7 +41,7 @@ class BaseTestAccountViewSet:
 
     def test_can_create_account(self, client: Client, normal_user_auth, list_url, new_acc_data):
         """
-        POST /api/games/league/
+        POST /api/games/<game>/
         Testing creating new game account as a normal user.
         """
         response = client.post(list_url, new_acc_data, **normal_user_auth)
@@ -61,7 +49,7 @@ class BaseTestAccountViewSet:
 
     def test_can_retrieve_account(self, client: Client, normal_user_auth, detail_url):
         """
-        GET /api/games/league/{id}/
+        GET /api/games/<game>/{id}/
         Testing retrieving game account as a normal user.
         """
         response = client.get(detail_url, **normal_user_auth)
@@ -69,7 +57,7 @@ class BaseTestAccountViewSet:
 
     def test_can_delete_account(self, client: Client, normal_user_auth, detail_url):
         """
-        DELETE /api/games/league/{id}/
+        DELETE /api/games/<game>/{id}/
         Testing deleting game account details as a normal user.
         """
         response = client.delete(detail_url, **normal_user_auth)
@@ -79,6 +67,7 @@ class BaseTestAccountViewSet:
 class TestLeagueOfLegendsAccountViewSet(BaseTestAccountViewSet):
     view_name = 'api:games:league_of_legends'
     gen_func = generate_league_of_legends_account_data
+    model = LeagueOfLegendsAccount
 
     def test_cannot_create_duplicate_account(self, client: Client, normal_user_auth, list_url,
                                              existing_acc_data):
@@ -88,5 +77,5 @@ class TestLeagueOfLegendsAccountViewSet(BaseTestAccountViewSet):
         """
         response = client.post(list_url, existing_acc_data, **normal_user_auth)
         assert response.status_code == 400
-        assert 'The fields username, server must make a unique set.' in \
-               response.data['non_field_errors']
+        error_message = 'The fields username, server must make a unique set.'
+        assert error_message in response.data['non_field_errors']
