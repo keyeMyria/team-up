@@ -1,8 +1,6 @@
 from userprofiles.models import UserProfile
 
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer,
-)
+from rest_framework.serializers import HyperlinkedModelSerializer
 
 
 class UserProfileSerializer(HyperlinkedModelSerializer):
@@ -12,7 +10,7 @@ class UserProfileSerializer(HyperlinkedModelSerializer):
         exclude = ('user',)
         extra_kwargs = {
             'url': {
-                'view_name': 'api"userprofiles:userprofile-detail',
+                'view_name': 'api:userprofiles:userprofile-detail',
                 # 'lookup_field': 'pk'
             },
             'account_league_of_legends': {

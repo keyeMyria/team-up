@@ -2,21 +2,26 @@ from django.contrib.auth import get_user_model
 
 
 class KeepUserConsumerMixin:
-    """
-    Make it possible to keep information about the user after initial connection
-    when not provided by channels (eg. when using tokens as authentication).
-    Must be placed before WebsocketConsumer (or derivative) in inheritance.
-    """
     channel_session = True
 
-    def dispatch(self, message, **kwargs):
-        response = super().dispatch(message, **kwargs)
-        if message.channel.name == 'websocket.connect':
-            if message.user is not None and not message.user.is_anonymous:
+    @staticmethod
+    def _save_user(func):
+        def wrapper(message, **kwargs):
+            if message.user is not None and message.user.is_authenticated():
                 message.channel_session['user_id'] = message.user.id
-        return response
+            return func(message, **kwargs)
+        return wrapper
+
+    def __getattribute__(self, name):
+        method = super().__getattribute__(name)
+        if name == 'connect':
+            return self._save_user(method)
+        return method
 
     @property
     def user(self):
-        user_id = self.message.channel_session['user_id']
-        return get_user_model().objects.get(id=user_id)
+        if not hasattr(self, '_user'):
+            user_id = self.message.channel_session['user_id']
+            user = get_user_model().objects.get(id=user_id)
+            self._user = user
+        return self._user
