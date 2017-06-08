@@ -1,11 +1,10 @@
+import json
 import pytest
 
-from django.core.urlresolvers import reverse
 from django.test import Client
 
-from common.generators import generate_league_of_legends_account_data
 from common.testing import BaseViewTest
-from games.models import LeagueOfLegendsAccount
+from games.tests.conftest import LeagueOfLegendsSettings
 
 
 class BaseTestAccountViewSet(BaseViewTest):
@@ -30,7 +29,6 @@ class BaseTestAccountViewSet(BaseViewTest):
         GET /api/games/<game>/{id}/
         Testing retrieving game account as a normal user.
         """
-        print(league_acc.detail_url)
         response = client.get(league_acc.detail_url, **normal_user_auth)
         assert response.status_code == 200
 
@@ -39,16 +37,42 @@ class BaseTestAccountViewSet(BaseViewTest):
         DELETE /api/games/<game>/{id}/
         Testing deleting game account details as a normal user.
         """
-        print(league_acc.detail_url)
         response = client.delete(league_acc.detail_url, **normal_user_auth)
         assert response.status_code == 204
 
+    @pytest.mark.parametrize("key, status_code", [
+        ('username', 200),
+        ('league', 200),
+        ('division', 200),
+        ('server', 200),
+    ])
+    def test_can_patch_update_account(self, client: Client, normal_user_auth, league_acc,
+                                      new_acc_data, key, status_code):
+        """
+        PATCH /api/games/<game>/{id}/
+        Testing patch updating game account details as a normal user.
+        """
+        data = {key: new_acc_data[key]}
+        response = client.patch(league_acc.detail_url,
+                                json.dumps(data),
+                                content_type='application/json',
+                                **normal_user_auth)
+        assert response.status_code == status_code
 
-class TestLeagueOfLegendsAccountViewSet(BaseTestAccountViewSet):
-    view_name = 'api:games:league_of_legends'
-    gen_func = generate_league_of_legends_account_data
-    model = LeagueOfLegendsAccount
+    def test_can_put_update_account(self, client: Client, normal_user_auth, league_acc,
+                                    new_acc_data):
+        """
+        PUT /api/games/<game>/{id}/
+        Testing PUT update game account details as a normal user.
+        """
+        response = client.put(league_acc.detail_url,
+                              json.dumps(new_acc_data),
+                              content_type='application/json',
+                              **normal_user_auth)
+        assert response.status_code == 200
 
+
+class TestLeagueOfLegendsAccountViewSet(LeagueOfLegendsSettings, BaseTestAccountViewSet):
     def test_cannot_create_duplicate_account(self, client: Client, normal_user_auth, list_url,
                                              league_acc):
         """

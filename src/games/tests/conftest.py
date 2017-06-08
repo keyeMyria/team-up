@@ -4,7 +4,14 @@ from django.core.urlresolvers import reverse
 
 from common.generators import generate_league_of_legends_account_data
 from games.models import LeagueOfLegendsAccount
-import operator
+from operator import attrgetter
+
+
+class LeagueOfLegendsSettings:
+    view_name = 'api:games:league_of_legends'
+    gen_func = generate_league_of_legends_account_data
+    model = LeagueOfLegendsAccount
+    lookup_field = 'pk'
 
 
 class SingleAccountCreator:
@@ -22,7 +29,7 @@ class SingleAccountCreator:
         lookup = self.lookup_field.replace('__', '.')
         self.d['detail_url'] = reverse(f'{self.view_name}-detail', kwargs={
             self.lookup_field:
-                operator.attrgetter(lookup)(instance)
+                attrgetter(lookup)(instance)
         })
 
     @property
@@ -38,11 +45,8 @@ class SingleAccountCreator:
         return self.d['detail_url']
 
 
-class LeagueAccountCreator(SingleAccountCreator):
-    view_name = 'api:games:league_of_legends'
-    gen_func = generate_league_of_legends_account_data
-    model = LeagueOfLegendsAccount
-    lookup_field = 'pk'
+class LeagueAccountCreator(LeagueOfLegendsSettings, SingleAccountCreator):
+    pass
 
 
 @pytest.fixture
