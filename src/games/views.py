@@ -16,4 +16,3 @@ class LeagueOfLegendsAccountViewSet(mixins.CreateModelMixin,
     # https://github.com/encode/django-rest-framework/issues/5048
     queryset = LeagueOfLegendsAccount.objects.order_by('id')
     filter_class = LeagueFilter
-
