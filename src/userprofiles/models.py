@@ -1,10 +1,11 @@
+from django.core.urlresolvers import reverse
 from django.db import models
+
+from games.models import GameAccount
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField('accounts.User')
-    account_league_of_legends = models.ForeignKey('games.LeagueOfLegendsAccount', blank=True,
-                                                  null=True)
 
     class Meta:
         verbose_name = 'User profile'
@@ -18,10 +19,7 @@ class UserProfile(models.Model):
         """
         :return: User's active games accounts
         """
-        accounts = []
-        for attr in dir(self):
-            if attr.startswith('account'):
-                account = getattr(self, attr)
-                if account is not None:
-                    accounts.append(account)
+        account_names = [cls.__name__ for cls in GameAccount.__subclasses__()]
+        accounts = {acc_name: getattr(self, f'{acc_name.lower()}_set').all()
+                    for acc_name in account_names}
         return accounts

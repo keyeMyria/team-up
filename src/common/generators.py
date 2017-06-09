@@ -45,8 +45,8 @@ def generate_message(user=None, room=None):
     return Message(room=room, sender=user, content=content)
 
 
-def generate_league_of_legends_account_data(credentials=None) -> dict:
-    if not None:
+def generate_league_of_legends_account_data(user, credentials=None) -> dict:
+    if not credentials:
         credentials = {}
 
     league_choices = LeagueOfLegendsAccount.LEAGUE_CHOICES
@@ -56,6 +56,7 @@ def generate_league_of_legends_account_data(credentials=None) -> dict:
     fake = Faker()
     data = {
         'username': credentials.get('username', fake.user_name()),
+        'user_profile': user.userprofile,
         'league': credentials.get('league', randint(1, len(league_choices))),
         'division': credentials.get('division', randint(1, len(division_choices))),
         'server': credentials.get('server', randint(1, len(server_choices)))
