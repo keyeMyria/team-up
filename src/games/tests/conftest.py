@@ -13,17 +13,16 @@ class LeagueOfLegendsSettings:
     gen_func = staticmethod(generate_league_of_legends_account_data)
     model = LeagueOfLegendsAccount
     lookup_field = 'pk'
+    read_only_fields = ['user_profile']
 
 
-class AccountManager(LeagueOfLegendsSettings):
+class AccountManager:
     acc_data = {}
     instance = None
     detail_url_var = ''
 
     user = None
     user_auth = None
-    normal_user = None
-    admin_user = None
 
     class DetailUrlException(Exception):
         pass
@@ -46,11 +45,15 @@ class AccountManager(LeagueOfLegendsSettings):
 
     def _save_to_db(self):
         self.instance = self.model.objects.create(**self.acc_data)
+
+        # Reasoning in case of LeagueOfLegendsAccount:
         # user_profile was needed to create model instance while not using a request
-        # now it has to be deleted not to hamper further acc_data usage such as sending requests
-        # that cannot serialize user_profile instance (it's not needed and doesn't have any impact
-        # as user_profile is specified as a read_only field in all GameAccounts serializers
-        del self.acc_data['user_profile']
+        # Now it has to be deleted not to hamper further acc_data usage such as sending requests
+        # that cannot serialize user_profile instance (it's not needed and doesn't have any
+        # impact as user_profile is specified as a read_only field in all GameAccounts serializers
+        for field in self.read_only_fields:
+            del self.acc_data[field]
+
         self._set_detail_url()
 
     def _set_detail_url(self):
@@ -59,7 +62,7 @@ class AccountManager(LeagueOfLegendsSettings):
             self.lookup_field: attrgetter(lookup)(self.instance)
         })
 
-    def __init__(self, admin_user, normal_user):
+    def __init__(self, admin_user, normal_user, settings_class):
         """
         Both admin_user and normal_user are intended to be fixtures passed during
         class initialization.
@@ -67,7 +70,12 @@ class AccountManager(LeagueOfLegendsSettings):
         self.admin_user = admin_user
         self.normal_user = normal_user
 
-    # create multi run option
+        self.view_name = settings_class.view_name
+        self.gen_func = settings_class.gen_func
+        self.model = settings_class.model
+        self.lookup_field = settings_class.lookup_field
+        self.read_only_fields = settings_class.read_only_fields
+
     def run(self, affiliation, user_type, create=True, user=None):
         """
         This function sets all of these variables: acc_data, instance, detail_url_var, user,
@@ -75,7 +83,7 @@ class AccountManager(LeagueOfLegendsSettings):
         if you want the generated user to be its owner or not.
         :param affiliation: 'own'/'else\'s' whether you want to generated/created object to be
                             yours or not
-        :param user_type: 'admin'/'normal' str type...
+        :param user_type: 'admin'/'normal' specify type of the generated user
         :param create: boolean whether to save the generated model instance to the database
         :param user: optional argument if you want to specify the owner of the model instance
                     you want to generate/create
@@ -104,9 +112,3 @@ class AccountManager(LeagueOfLegendsSettings):
             return self.detail_url_var
         raise self.DetailUrlException(
             "You can't access detail_url without creating account instance.")
-
-
-@pytest.fixture
-def mgr(admin_user, normal_user):
-    acc_mgr = AccountManager(admin_user, normal_user)
-    return acc_mgr

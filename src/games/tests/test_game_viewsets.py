@@ -4,11 +4,14 @@ import pytest
 from django.test import Client
 
 from common.testing import BaseViewTest
-from games.tests.conftest import LeagueOfLegendsSettings
+from games.tests.conftest import LeagueOfLegendsSettings, AccountManager
 
 
 class BaseTestAccountViewSet(BaseViewTest):
-    gen_func = None
+    @pytest.fixture
+    def mgr(self, admin_user, normal_user):
+        acc_mgr = AccountManager(admin_user, normal_user, self.settings_class)
+        return acc_mgr
 
     @pytest.mark.parametrize('affiliation, user_type, create, status_code', [
         ('own', 'normal', False, 201),
@@ -98,8 +101,6 @@ class BaseTestAccountViewSet(BaseViewTest):
         PUT /api/games/<game>/{id}/
         Testing PUT update game account details.
         """
-        # need to find a nice way to generate update acc data!!
-        # not sure if needed I guess not
         mgr.run(affiliation, user_type, create)
         response = client.put(mgr.detail_url,
                               json.dumps(mgr.acc_data),
@@ -107,8 +108,6 @@ class BaseTestAccountViewSet(BaseViewTest):
                               **mgr.user_auth)
         assert response.status_code == status_code
 
-
-class TestLeagueOfLegendsAccountViewSet(LeagueOfLegendsSettings, BaseTestAccountViewSet):
     @pytest.mark.parametrize('affiliation, user_type, create, status_code', [
         ('own', 'normal', True, 400),
         ('else\'s', 'normal', True, 400),
@@ -119,10 +118,16 @@ class TestLeagueOfLegendsAccountViewSet(LeagueOfLegendsSettings, BaseTestAccount
                                              affiliation, user_type, create, status_code):
         """
         POST /api/games/league/
-        Ensure we cannot create a duplicate of an account.
+        Ensure we cannot create a duplicate of the account.
         """
         mgr.run(affiliation, user_type, create)
         response = client.post(list_url, mgr.acc_data, **mgr.user_auth)
         assert response.status_code == status_code
         error_message = 'The fields username, server must make a unique set.'
         assert error_message in response.data['non_field_errors']
+
+    # TODO: test accessing non-existent page as well as existent one GET /api/games/league/?page=1
+
+
+class TestLeagueOfLegendsAccountViewSet(BaseTestAccountViewSet):
+    settings_class = LeagueOfLegendsSettings

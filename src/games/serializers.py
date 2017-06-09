@@ -1,6 +1,6 @@
 from games.models import LeagueOfLegendsAccount
 
-from rest_framework.serializers import HyperlinkedModelSerializer
+from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
 
 
 class LeagueOfLegendsAccountSerializer(HyperlinkedModelSerializer):
@@ -18,7 +18,7 @@ class LeagueOfLegendsAccountSerializer(HyperlinkedModelSerializer):
                 'lookup_field': 'pk'
             },
         }
-        read_only_fields = [
+        read_only_fields = (
             'user',
-            'user_profile'
-        ]
+            'user_profile',
+        )

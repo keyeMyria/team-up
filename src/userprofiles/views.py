@@ -7,7 +7,6 @@ from userprofiles.serializers import UserProfileSerializer
 class UserProfileViewSet(mixins.RetrieveModelMixin,
                          mixins.UpdateModelMixin,
                          mixins.ListModelMixin,
-                         mixins.DestroyModelMixin,
                          viewsets.GenericViewSet):
     serializer_class = UserProfileSerializer
     queryset = UserProfile.objects.all()

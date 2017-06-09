@@ -1,13 +1,16 @@
-from userprofiles.models import UserProfile
+from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField, IntegerField
 
-from rest_framework.serializers import HyperlinkedModelSerializer
+from games.serializers import LeagueOfLegendsAccountSerializer
+from userprofiles.models import UserProfile
 
 
 class UserProfileSerializer(HyperlinkedModelSerializer):
+    user = SerializerMethodField()
+    game_accounts = SerializerMethodField()
 
     class Meta:
         model = UserProfile
-        exclude = ('user',)
+        fields = '__all__'
         extra_kwargs = {
             'url': {
                 'view_name': 'api:userprofiles:userprofile-detail',
@@ -18,3 +21,25 @@ class UserProfileSerializer(HyperlinkedModelSerializer):
                 # 'lookup_field': 'pk'
             },
         }
+        read_only_fields = (
+            'game_accounts',
+        )
+
+    def get_game_accounts(self, user_profile):
+        # got other idea? contribute...
+        serializers = {
+            'LeagueOfLegendsAccount': LeagueOfLegendsAccountSerializer,
+        }
+        game_accounts = {}
+        for acc_type, queryset in user_profile.accounts.items():
+            # key = re.sub(r"(\w)([A-Z])", r"\1 \2", acc_type.replace('Account', ''))
+            game_accounts[acc_type] = serializers[acc_type](
+                queryset,
+                many=True,
+                context=self.context
+            ).data
+        return game_accounts
+
+    @staticmethod
+    def get_user(user_profile):
+        return str(user_profile.user)

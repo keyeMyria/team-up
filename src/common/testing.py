@@ -13,7 +13,7 @@ def auth_headers(user: User) -> dict:
 
 
 class BaseViewTest:
-    view_name = ''
+    settings_class = None
 
     @pytest.fixture
     def normal_user_auth(self, normal_user: User):
@@ -25,4 +25,4 @@ class BaseViewTest:
 
     @pytest.fixture
     def list_url(self):
-        return reverse(f'{self.view_name}-list')
+        return reverse(f'{self.settings_class.view_name}-list')
