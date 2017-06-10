@@ -20,8 +20,10 @@ class Message(models.Model):
 
 
 class Room(models.Model):
-    name = models.TextField(_('Name of the room'))
-    users = models.ManyToManyField('accounts.User')
+    public = models.BooleanField(default=False)
+    name = models.TextField(_('Name of the room'), null=True, blank=True)
+    users = models.ManyToManyField('accounts.User', blank=True)
+    active_users = models.ManyToManyField('accounts.User', related_name='active_room', blank=True)
     date_created = models.DateTimeField(_('Date'), default=timezone.now)
 
     class Meta:
@@ -38,3 +40,29 @@ class Room(models.Model):
             return self.message_set.latest()
         except ObjectDoesNotExist:
             return None
+
+    def allowed(self, user):
+        """
+        Return True if user is allowed to join this room and False otherwise.
+        """
+        if user.room_set.filter(id=self.id).exists():
+            return True
+        else:
+            return False
+
+
+class ChatEvent(models.Model):
+    EVENTS = (
+        ('connect', _('connect')),
+        ('disconnect', _('disconnect'))
+    )
+
+    event = models.TextField(choices=EVENTS)
+    user = models.ForeignKey('accounts.User')
+    room = models.ForeignKey(Room)
+    date = models.DateTimeField(_('Date'), default=timezone.now)
+
+    class Meta:
+        verbose_name = 'Chat event'
+        verbose_name_plural = 'Chat events'
+        get_latest_by = 'date'

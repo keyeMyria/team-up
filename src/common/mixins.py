@@ -22,6 +22,5 @@ class KeepUserConsumerMixin:
     def user(self):
         if not hasattr(self, '_user'):
             user_id = self.message.channel_session['user_id']
-            user = get_user_model().objects.get(id=user_id)
-            self._user = user
+            self._user = get_user_model().objects.get(id=user_id)
         return self._user
