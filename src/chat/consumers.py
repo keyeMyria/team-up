@@ -32,6 +32,9 @@ class ChatConsumer(RestTokenConsumerMixin,
         if not self.room.allowed(message.user):
             return self.close({'Error': 'User not allowed in this room'})
 
+        # Send success response
+        message.reply_channel.send({"accept": True})
+
         # Save user as active
         self.room.active_users.add(message.user)
 
@@ -43,11 +46,9 @@ class ChatConsumer(RestTokenConsumerMixin,
         # Send information about new connection
         connect_message = f'{message.user.username} joined the chat'
         self.group_send(group, connect_message)
+
         # Add user to group
         Group(group).add(message.reply_channel)
-
-        # Send success response
-        message.reply_channel.send({"accept": True})
 
         # Log chat event
         self.add_chat_event('connect')

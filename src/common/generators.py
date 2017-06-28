@@ -1,15 +1,15 @@
-from random import randint
+from random import randint, choice
 
 from faker import Faker
 import arrow
 
 from django.db.utils import IntegrityError
 from accounts.models import User
-from chat.models import Room, Message
+from chat.models import Room, Message, ChatEvent
 from games.models import LeagueOfLegendsAccount
 
 
-def generate_user(is_superuser=False):
+def generate_user(is_superuser=False, password=None):
     fake = Faker()
 
     while True:
@@ -21,8 +21,9 @@ def generate_user(is_superuser=False):
         birthdate = arrow.get(birthdate).datetime
         email = simple_profile['mail']
         gender = simple_profile['sex']
+        password = password if password else 'haslo1234'
         try:
-            return User.objects.create(username=username, first_name=first_name,
+            return User.objects.create(username=username, first_name=first_name, password=password,
                                        last_name=last_name, email=email, is_superuser=is_superuser,
                                        is_staff=is_superuser, birthdate=birthdate, gender=gender)
         except IntegrityError:
@@ -63,3 +64,15 @@ def generate_league_of_legends_account_data(user, credentials=None) -> dict:
     }
 
     return data
+
+
+def generate_chat_event(user=None, room=None):
+    if user is None:
+        user = generate_user()
+    if room is None:
+        room = generate_room()
+    room.save()
+    user.save()
+    room.users.add(user)
+    event = choice(['connect', 'disconnect'])
+    return ChatEvent(room=room, user=user, event=event)

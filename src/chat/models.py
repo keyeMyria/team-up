@@ -23,7 +23,7 @@ class Room(models.Model):
     public = models.BooleanField(default=False)
     name = models.TextField(_('Name of the room'), null=True, blank=True)
     users = models.ManyToManyField('accounts.User', blank=True)
-    active_users = models.ManyToManyField('accounts.User', related_name='active_room', blank=True)
+    active_users = models.ManyToManyField('accounts.User', related_name='active_rooms', blank=True)
     date_created = models.DateTimeField(_('Date'), default=timezone.now)
 
     class Meta:

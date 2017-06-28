@@ -26,3 +26,9 @@ class TestRoom:
             last_message = generate_message(room=room, user=normal_user)
             last_message.save()
         assert room.last_activity == last_message
+
+
+@pytest.mark.django_db
+class TestChatEvent:
+    def test_creation(self, chat_event):
+        pass

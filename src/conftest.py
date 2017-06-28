@@ -2,11 +2,17 @@ import pytest
 from oauth2_provider.models import Application
 
 from common.generators import generate_user
+from common.utils import create_user_token
 
 
 @pytest.fixture
 def normal_user():
     return generate_user()
+
+
+@pytest.fixture
+def token(normal_user):
+    return create_user_token(user=normal_user)
 
 
 @pytest.fixture(autouse=True)
