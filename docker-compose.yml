@@ -1,26 +1,55 @@
 version: '2'
 
 services:
-  postgres:
+  tu-django:
+    build:
+      context: server/
+      dockerfile: /docker/Dockerfile-django
+    container_name: 'tu-django'
+    labels:
+      application: 'tu-django'
+    env_file:
+      - server/env/base.env
+    expose:
+      - '8001'
+    depends_on:
+      - tu-postgres
+
+  tu-postgres:
     image: postgres:latest
-    container_name: "team-up-postgres"
+    container_name: 'tu-postgres'
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_DB: 'team-up'
+      POSTGRES_DB: 'tu'
     labels:
-      application: "team-up-postgres"
+      application: 'tu-postgres'
     expose:
-      - "5432"
-    ports:
-      - "5432:5432"
+      - '5432'
 
-  redis:
+  tu-redis:
     image: redis:latest
-    container_name: "team-up-redis"
+    container_name: 'tu-redis'
     labels:
-      application: "team-up-redis"
+      application: 'tu-redis'
     expose:
-      - "6379"
+      - '6379'
+
+  tu-nginx:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile-nginx
+    container_name: 'tu-nginx'
+    labels:
+      application: 'tu-nginx'
+    volumes:
+      - nginx-data-volume:/opt/tu/logs/nginx
     ports:
-      - "6379:6379"
+      - '80:80'
+    depends_on:
+      - tu-django
+    command: bash entry-point.sh
+
+volumes:
+  db-data-volume:
+  nginx-data-volume:

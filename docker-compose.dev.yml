@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  tu-django:
+    command: bash docker/entrypoint.dev.sh
+    env_file:
+      - server/env/dev.env
+    volumes:
+      - ./server/:/opt/tu/django/
+    ports:
+      - '8001:8001'
+
+  tu-postgres:
+    ports:
+      - '5432:5432'
+
+  tu-redis:
+    ports:
+      - '6379:6379'
+
+  tu-nginx:
+    volumes:
+      - ./client/src/:/opt/tu/static
+      - ./nginx/conf.d:/etc/nginx/conf.d

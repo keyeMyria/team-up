@@ -1,0 +1,5 @@
+FROM python:3.6.2
+RUN mkdir -p /opt/tu/django
+WORKDIR /opt/tu/django/
+COPY . .
+RUN pip install -r requirements.txt
