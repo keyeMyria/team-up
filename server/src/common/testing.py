@@ -1,7 +1,7 @@
 import pytest
-from accounts.models import User
 from django.core.urlresolvers import reverse
 
+from accounts.models import User
 from common.utils import create_user_token
 
 

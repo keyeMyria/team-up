@@ -1,6 +1,6 @@
-from games.serializers import LeagueOfLegendsAccountSerializer
 from rest_framework.serializers import HyperlinkedModelSerializer, SerializerMethodField
 
+from games.serializers import LeagueOfLegendsAccountSerializer
 from userprofiles.models import UserProfile
 
 

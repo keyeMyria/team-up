@@ -2,9 +2,9 @@ import json
 
 import pytest
 from django.test import Client
-from games.tests.conftest import LeagueOfLegendsSettings, AccountManager
 
 from common.testing import BaseViewTest
+from games.tests.conftest import AccountManager, LeagueOfLegendsSettings
 
 
 class BaseTestAccountViewSet(BaseViewTest):

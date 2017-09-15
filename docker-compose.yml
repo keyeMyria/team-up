@@ -5,6 +5,8 @@ services:
     build:
       context: server/
       dockerfile: /docker/Dockerfile-django
+      args:
+        - py_requirements=requirements/base.txt
     container_name: 'tu-django'
     labels:
       application: 'tu-django'
@@ -14,6 +16,7 @@ services:
       - '8001'
     depends_on:
       - tu-postgres
+      - tu-redis
 
   tu-postgres:
     image: postgres:latest

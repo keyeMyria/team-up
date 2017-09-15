@@ -1,11 +1,11 @@
-from random import randint, choice
+from random import choice, randint
 
 import arrow
-from accounts.models import User
-from chat.models import Room, Message, ChatEvent
 from django.db.utils import IntegrityError
 from faker import Faker
 
+from accounts.models import User
+from chat.models import ChatEvent, Message, Room
 from games.models import LeagueOfLegendsAccount
 
 

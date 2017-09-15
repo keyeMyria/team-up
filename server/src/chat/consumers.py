@@ -1,10 +1,10 @@
 from channels import Group
 from channels.generic.websockets import JsonWebsocketConsumer
-from chat.models import Room, Message, ChatEvent
-from common.mixins import KeepUserConsumerMixin
 from django.core.exceptions import ObjectDoesNotExist
 
+from chat.models import ChatEvent, Message, Room
 from common.authentication import RestTokenConsumerMixin
+from common.mixins import KeepUserConsumerMixin
 
 
 class ChatConsumer(RestTokenConsumerMixin,

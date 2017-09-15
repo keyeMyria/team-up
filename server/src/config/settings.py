@@ -1,4 +1,5 @@
 import os
+
 import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -198,11 +199,11 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 
 # Channels
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "ROUTING": "config.routing.channel_routing",
-        'config': {
-            'hosts': [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))]
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'ROUTING': 'config.routing.channel_routing',
+        'CONFIG': {
+            'hosts': [(os.environ.get('REDIS_HOST'), int(os.environ.get('REDIS_PORT')))]
         }
     },
 }

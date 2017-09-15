@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  tu-django:
+    command: bash docker/entrypoint.test.sh
+
+#    env_file:
+#      - server/env/test.env

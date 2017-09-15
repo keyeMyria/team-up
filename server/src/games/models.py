@@ -4,7 +4,7 @@ from django.utils.text import ugettext_lazy as _
 
 class GameAccount(models.Model):
     username = models.TextField(max_length=100)
-    user_profile = models.ForeignKey('userprofiles.UserProfile')  # change to userprofile to be consistent
+    user_profile = models.ForeignKey('userprofiles.UserProfile')
 
     class Meta:
         abstract = True

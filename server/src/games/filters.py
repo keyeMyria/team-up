@@ -1,4 +1,4 @@
-from django_filters import FilterSet, ChoiceFilter
+from django_filters import ChoiceFilter, FilterSet
 
 from games.models import LeagueOfLegendsAccount
 

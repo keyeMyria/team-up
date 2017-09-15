@@ -1,6 +1,6 @@
 import pytest
 
-from common.generators import generate_room, generate_message, generate_chat_event
+from common.generators import generate_chat_event, generate_message, generate_room
 
 
 @pytest.fixture

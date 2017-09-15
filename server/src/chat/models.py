@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 from django.utils import timezone
 from django.utils.text import ugettext_lazy as _
 

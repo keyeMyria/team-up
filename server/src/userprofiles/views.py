@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins
+from rest_framework import mixins, viewsets
 
 from userprofiles.models import UserProfile
 from userprofiles.serializers import UserProfileSerializer
@@ -9,4 +9,6 @@ class UserProfileViewSet(mixins.RetrieveModelMixin,
                          mixins.ListModelMixin,
                          viewsets.GenericViewSet):
     serializer_class = UserProfileSerializer
-    queryset = UserProfile.objects.all()
+
+    # changed from UserProfile.objects.all() to cancel UnorderedObjectListWarning during tests
+    queryset = UserProfile.objects.order_by('id')

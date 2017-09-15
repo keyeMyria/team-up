@@ -2,6 +2,9 @@ version: '2'
 
 services:
   tu-django:
+    build:
+      args:
+        - py_requirements=requirements.txt
     command: bash docker/entrypoint.dev.sh
     env_file:
       - server/env/dev.env

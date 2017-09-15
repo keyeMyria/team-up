@@ -1,9 +1,9 @@
+from rest_framework import mixins, viewsets
+
 from common.permissions import IsOwnerOrAdminOrReadOnly
+from games.filters import LeagueFilter
 from games.models import LeagueOfLegendsAccount
 from games.serializers import LeagueOfLegendsAccountSerializer
-from rest_framework import viewsets, mixins
-
-from games.filters import LeagueFilter
 
 
 class LeagueOfLegendsAccountViewSet(mixins.CreateModelMixin,

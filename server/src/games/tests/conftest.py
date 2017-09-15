@@ -1,10 +1,10 @@
 from operator import attrgetter
 
 from django.core.urlresolvers import reverse
-from games.models import LeagueOfLegendsAccount
 
-from common.testing import auth_headers
 from common.generators import generate_league_of_legends_account_data, generate_user
+from common.testing import auth_headers
+from games.models import LeagueOfLegendsAccount
 
 
 class LeagueOfLegendsSettings:

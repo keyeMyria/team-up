@@ -2,7 +2,7 @@ import pytest
 from django.core.urlresolvers import reverse
 from django.test import Client
 
-from common import BaseViewTest
+from common.testing import BaseViewTest
 
 
 class RegularUserProfileSettings:
@@ -51,6 +51,15 @@ class BaseTestUserProfileViewSet(BaseViewTest):
         url = reverse(f'{self.settings_class.view_name}-detail',
                       kwargs={'pk': users_auth[user_type]['user'].userprofile.id})
         response = client.get(url, **users_auth[user_type]['auth'])
+        assert response.status_code == status_code
+
+    @pytest.mark.parametrize('user_type, status_code', [
+        ('normal', 200),
+        ('admin', 200)
+    ])
+    def test_can_list_user_profiles(self, client: Client, list_url, users_auth,
+                                       user_type, status_code):
+        response = client.get(list_url, **users_auth[user_type]['auth'])
         assert response.status_code == status_code
 
     # TODO: test accessing non-existent page as well as existent one GET /api/userprofiles/?page=1

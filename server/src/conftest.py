@@ -1,8 +1,8 @@
 import pytest
 from oauth2_provider.models import Application
 
-from common.utils import create_user_token
 from common.generators import generate_user
+from common.utils import create_user_token
 
 
 @pytest.fixture

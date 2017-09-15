@@ -1,7 +1,7 @@
 import pytest
 from channels.test import HttpClient
 
-from chat.models import Room, Message
+from chat.models import Message, Room
 
 
 @pytest.fixture
