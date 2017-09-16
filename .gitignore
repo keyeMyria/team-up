@@ -1,3 +1,4 @@
+/client/tmp
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
@@ -62,3 +63,13 @@ celerybeat-schedule
 .ropeproject
 .idea/
 .DS_Store
+.vscode/
+
+# JS
+**/node_modules/
+/client/team-up/dist
+/client/team-up/out-tsc
+npm-debug.log
+testem.log
+
+
