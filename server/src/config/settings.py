@@ -162,6 +162,9 @@ LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
 LOGIN_REDIRECT_URL = 'documentation'
 
+FORCE_SCRIPT_NAME = '/server'
+
+
 # Rest framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
