@@ -31,7 +31,6 @@ services:
     build:
       context: ./client/
       dockerfile: docker/Dockerfile-livereload
-    command: npm run dev
     container_name: 'tu-livereload'
     labels:
       application: 'tu-livereload'
