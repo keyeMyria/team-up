@@ -3,5 +3,3 @@
 touch /opt/tu/logs/nginx/nginx-access.log
 touch /opt/tu/logs/nginx/nginx-error.log
 tail -n 0 -f /opt/tu/logs/nginx/*.log &
-
-nginx -g 'daemon off;'

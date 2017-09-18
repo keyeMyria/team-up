@@ -154,13 +154,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/rest_framework/'
 
 INTERNAL_IPS = ['*']
 
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
 LOGIN_REDIRECT_URL = 'documentation'
+
+FORCE_SCRIPT_NAME = '/server'
+
 
 # Rest framework
 REST_FRAMEWORK = {

@@ -76,6 +76,7 @@ There is a Makefile with following commands:
     * `logs-postgres`
     * `logs-django`
     * `logs-nginx`
+* `dev-reload` - Watch files for changes and reloads services when needed.
 * `reload-nginx` - Reload nginx
 * `prepare-tests` - Start containers in test mode
 * `test` - Run tests inside containers.

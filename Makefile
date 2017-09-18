@@ -7,7 +7,7 @@ build-nginx: build-dev-nginx
 
 
 # Build development containers
-build-dev-all: build-dev-redis build-dev-postgres build-dev-django build-dev-nginx
+build-dev-all: build-dev-redis build-dev-postgres build-dev-django build-dev-nginx build-dev-livereload
 build-dev-redis:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-redis
 build-dev-postgres:
@@ -16,6 +16,8 @@ build-dev-django:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-django
 build-dev-nginx:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-nginx
+build-dev-livereload:
+	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-livereload
 
 
 # Build production containers
@@ -119,6 +121,10 @@ logs-django:
 logs-nginx:
 	@docker logs -f tu-nginx
 
+
+# utils
+dev-reload:
+	@bash dev-reload.sh
 
 # Tests
 # Starts containers so that we are ready to run tests in them
