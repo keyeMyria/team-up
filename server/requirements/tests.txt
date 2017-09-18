@@ -1,3 +1,3 @@
 pytest==3.2.2
--e git+https://github.com/gradam/pytest-django.git@8b456077d78c9db75a10087193536ee4f86ebc51#egg=pytest_django
+-e git+https://github.com/gradam/pytest-django.git@3.1.3#egg=pytest_django
 Faker==0.7.12
