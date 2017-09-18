@@ -7,7 +7,7 @@ build-nginx: build-dev-nginx
 
 
 # Build development containers
-build-dev-all: build-redis build-postgres build-django build-nginx
+build-dev-all: build-dev-redis build-dev-postgres build-dev-django build-dev-nginx
 build-dev-redis:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-redis
 build-dev-postgres:
@@ -70,9 +70,9 @@ stop:
 
 # Remove docker containers
 rm-redis:
-	-@docker rm $(ID-REDIS)
+	-@docker rm --volumes $(ID-REDIS)
 rm-postgres:
-	-@docker rm $(ID-POSTGRES)
+	-@docker rm --volumes $(ID-POSTGRES)
 rm-django:
 	-@docker rm $(ID-DJANGO)
 rm-nginx:
@@ -82,9 +82,9 @@ rm: rm-nginx rm-django rm-postgres rm-redis
 
 # Remove volumes
 rm-db-volume:
-	@docker volume rm teamupserver_db-data-volume
+	@docker volume rm teamup_db-data-volume
 rm-nginx-volume:
-	-@docker volume rm teamupserver_nginx-data-volume
+	-@docker volume rm teamup_nginx-data-volume
 rm-all-volumes: rm-db-volume rm-nginx-volume
 
 
