@@ -17,4 +17,4 @@ while True:
         s_redis.close()
         break
     except socket.error as ex:
-        time.sleep(0.1)
+        time.sleep(1)

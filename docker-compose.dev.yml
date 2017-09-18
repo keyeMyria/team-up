@@ -24,4 +24,21 @@ services:
   tu-nginx:
     volumes:
       - ./client/src/:/opt/tu/static
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/configurations:/etc/nginx/configurations
+    command: bash entry-point.dev.sh
+
+  tu-livereload:
+    build:
+      context: ./client/
+      dockerfile: docker/Dockerfile-livereload
+    command: npm run dev
+    container_name: 'tu-livereload'
+    labels:
+      application: 'tu-livereload'
+    volumes:
+      - ./client/:/opt/team-up/static
+    expose:
+      - '4200'
+    ports:
+      - '4200:4200'
+    command: npm run dev

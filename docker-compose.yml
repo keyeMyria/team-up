@@ -51,7 +51,6 @@ services:
       - '80:80'
     depends_on:
       - tu-django
-    command: bash entry-point.sh
 
 volumes:
   db-data-volume:
