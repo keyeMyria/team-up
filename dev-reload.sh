@@ -9,7 +9,7 @@ if hash inotifywait 2>/dev/null; then
       fi
     done
 else
-    echo -e "\033[0;31mPlease run 'sudo apt install inotifywait' first!"
+    echo -e "\033[0;31mPlease run 'sudo apt install inotify-tools' first!"
     exit 1
 fi
 
