@@ -18,6 +18,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import RedirectView
+from django.views.static import serve
 from rest_framework_swagger.views import get_swagger_view
 
 from common.permissions import is_admin
@@ -40,9 +41,11 @@ urlpatterns = [
     url(r'^health/', include('health_check.urls')),
 ]
 
-
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
+        url(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
     ]

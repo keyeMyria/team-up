@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 'health_check.storage',
     # 'health_check.contrib.celery',  # requires celery
     # 'health_check.contrib.s3boto_storage',
+    'stdimage',
     # My apps
     'accounts.apps.AccountsConfig',
     'chat.apps.ChatConfig',
@@ -154,6 +155,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/rest_framework/'
 
