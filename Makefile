@@ -4,10 +4,12 @@ build-redis: build-dev-redis
 build-postgres: build-dev-postgres
 build-django: build-dev-django
 build-nginx: build-dev-nginx
+build-rabbitmq: build-dev-rabbitmq
+build-celery: build-dev-celery
 
 
 # Build development containers
-build-dev-all: build-dev-redis build-dev-postgres build-dev-django build-dev-nginx build-dev-livereload
+build-dev-all: build-dev-redis build-dev-postgres build-dev-django build-dev-nginx build-dev-livereload build-dev-rabbitmq build-dev-celery
 build-dev-redis:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-redis
 build-dev-postgres:
@@ -18,6 +20,10 @@ build-dev-nginx:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-nginx
 build-dev-livereload:
 	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-livereload
+build-dev-rabbitmq:
+	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-rabbitmq
+build-dev-celery:
+	@docker-compose -f docker-compose.yml -f docker-compose.dev.yml build tu-celery
 
 
 # Build production containers
@@ -30,6 +36,10 @@ build-prod-django:
 	@docker-compose -f docker-compose.yml build tu-django
 build-prod-nginx:
 	@docker-compose -f docker-compose.yml build tu-nginx
+build-prod-rabbitmq:
+	@docker-compose -f docker-compose.yml build tu-rabbitmq
+build-prod-celery:
+	@docker-compose -f docker-compose.yml build tu-celery
 
 
 # Rebuild docker containers - stop -> remove -> build
@@ -38,6 +48,8 @@ rebuild-redis: clean-redis build-redis
 rebuild-postgres: clean-postgres build-postgres
 rebuild-django: clean-django build-django
 rebuild-nginx: clean-nginx build-nginx
+rebuild-rabbitmq: clean-rabbitmq build-rabbitmq
+rebuild-celery: clean-celery build-celery
 
 
 run-dev:
@@ -55,6 +67,8 @@ ID-REDIS=$(shell docker ps -a -q -f "name=tu-redis")
 ID-POSTGRES=$(shell docker ps -a -q -f "name=tu-postgres")
 ID-DJANGO=$(shell docker ps -a -q -f "name=tu-django")
 ID-NGINX=$(shell docker ps -a -q -f "name=tu-nginx")
+ID-RABBITMQ=$(shell docker ps -a -q -f "name=tu-rabbitmq")
+ID-CELERY=$(shell docker ps -a -q -f "name=tu-celery")
 
 
 # Stop docker containers
@@ -66,6 +80,10 @@ stop-django:
 	-@docker stop $(ID-DJANGO)
 stop-nginx:
 	-@docker stop $(ID-NGINX)
+stop-rabbitmq:
+	-@docker stop $(ID-RABBITMQ)
+stop-celery:
+	-@docker stop $(ID-CELERY)
 stop:
 	@docker-compose stop
 
@@ -76,10 +94,14 @@ rm-redis:
 rm-postgres:
 	-@docker rm --volumes $(ID-POSTGRES)
 rm-django:
-	-@docker rm $(ID-DJANGO)
+	-@docker rm --volumes $(ID-DJANGO)
 rm-nginx:
-	-@docker rm $(ID-NGINX)
-rm: rm-nginx rm-django rm-postgres rm-redis
+	-@docker rm --volumes $(ID-NGINX)
+rm-rabbitmq:
+	-@docker rm --volumes $(ID-RABBITMQ)
+rm-celery:
+	-@docker rm --volumes $(ID-CELERY)
+rm: rm-nginx rm-django rm-postgres rm-redis rm-rabbitmq rm-celery
 
 
 # Remove volumes
@@ -95,7 +117,9 @@ clean-redis: stop-redis rm-redis
 clean-postgres: stop-postgres rm-postgres
 clean-django: stop-django rm-django
 clean-nginx: stop-nginx rm-nginx
-clean-all: clean-nginx clean-django clean-postgres clean-redis rm-all-volumes
+clean-rabbitmq: stop-rabbitmq rm-rabbitmq
+clean-celery: stop-celery rm-celery
+clean-all: clean-nginx clean-django clean-postgres clean-redis clean-rabbitmq clean-celery rm-all-volumes
 
 
 # Open shell in container
@@ -107,6 +131,8 @@ shell-django:
 	@docker exec -it tu-django bash
 shell-nginx:
 	@docker exec -it tu-nginx bash
+shell-celery:
+	@docker exec -it tu-celery bash
 
 
 # Logs
@@ -120,11 +146,17 @@ logs-django:
 	@docker logs -f tu-django
 logs-nginx:
 	@docker logs -f tu-nginx
+logs-rabbitmq:
+	@docker logs -f tu-rabbitmq
+logs-celery:
+	@docker logs -f tu-celery
 
 
 # utils
 dev-reload:
 	@bash dev-reload.sh
+createsu:
+	@docker exec tu-django python src/manage.py createsu
 
 # Tests
 # Starts containers so that we are ready to run tests in them

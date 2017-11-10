@@ -41,3 +41,12 @@ services:
     ports:
       - '4200:4200'
     command: npm run dev
+
+  tu-rabbitmq:
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  tu-celery:
+    volumes:
+      - ./server/:/opt/tu/celery/

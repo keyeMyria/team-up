@@ -52,6 +52,31 @@ services:
     depends_on:
       - tu-django
 
+  tu-rabbitmq:
+    image: rabbitmq:latest
+    container_name: 'tu-rabbitmq'
+    labels:
+      application: 'tu-rabbitmq'
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=pass
+    expose:
+      - '5672'
+      - '15672'
+
+  tu-celery:
+    build:
+      context: ./server/
+      dockerfile: docker/Dockerfile-celery
+    container_name: 'tu-celery'
+    labels:
+      application: 'tu-celery'
+    env_file:
+      - server/env/base.env
+    command: bash docker/celery-entrypoint.sh
+    depends_on:
+      - tu-rabbitmq
+
 volumes:
   db-data-volume:
   nginx-data-volume:

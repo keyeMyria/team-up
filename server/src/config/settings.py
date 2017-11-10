@@ -1,6 +1,7 @@
 import os
 
 import dotenv
+from kombu import Exchange, Queue
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -216,5 +217,48 @@ CHANNELS_API = {
 }
 
 # CELERY
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER')
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BROKER_URL = 'amqp://{user}:{password}@{host}:{port}/{vhost}/'.format(
+    user=os.environ.get('RABBIT_USER'),
+    password=os.environ.get('RABBIT_PASS'),
+    host=os.environ.get('RABBIT_HOST'),
+    port=os.environ.get('RABBIT_PORT'),
+    vhost=os.environ.get('RABBIT_ENV_VHOST', '')
+)
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+BROKER_HEARTBEAT = '?heartbeat=30'
+CELERY_BROKER_URL += BROKER_HEARTBEAT
+
+# Redis
+REDIS_PORT = int(os.environ.get('REDIS_PORT'))
+REDIS_DB = 0
+REDIS_HOST = os.environ.get('REDIS_HOST')
+
+# Celery configuration
+
+# configure queues, currently we have only one
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+
+# Sensible settings for celery
+# CELERY_TASK_ALWAYS_EAGER = False
+# CELERY_TASK_ACKS_LATE = True
+# CELERY_TASK_PUBLISH_RETRY = True
+# CELERY_WORKER_DISABLE_RATE_LIMITS = False
+
+# By default we will ignore result
+# If you want to see results and try out tasks interactively, change it to False
+# Or change this setting on tasks level
+# CELERY_TASK_IGNORE_RESULT = True
+# CELERY_RESULT_EXPIRES = 600
+
+# Don't use pickle as serializer, json is much safer
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+# CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+# CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+# CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000
