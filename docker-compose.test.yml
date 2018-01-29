@@ -1,8 +1,16 @@
-version: '2'
+version: '3.4'
 
 services:
   tu-django:
+    volumes:
+      - ./server/:/opt/tu/django
     command: bash docker/entrypoint.test.sh
+
+  tu-nginx:
+    command: bash scripts/entry-point.test.sh
+
+  tu-react:
+    command: npm test
 
 #    env_file:
 #      - server/env/test.env

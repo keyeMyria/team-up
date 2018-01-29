@@ -1,7 +1,12 @@
 FROM python:3.6.2
-RUN mkdir -p /opt/tu/celery
 WORKDIR /opt/tu/celery
-COPY . .
-RUN pip install -r requirements.txt
+
 # create unprivileged user
 RUN adduser --disabled-password --gecos '' myuser
+
+COPY requirements/ requirements
+
+# install suitable requirements
+RUN pip install -r requirements/development.txt
+
+COPY . .

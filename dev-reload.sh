@@ -12,6 +12,3 @@ else
     echo -e "\033[0;31mPlease run 'sudo apt install inotify-tools' first!"
     exit 1
 fi
-
-
-

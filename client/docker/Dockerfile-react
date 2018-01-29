@@ -1,0 +1,10 @@
+FROM node:9.4.0
+
+ENV NPM_CONFIG_LOGLEVEL warn
+
+WORKDIR /opt/tu/static
+
+COPY package.json ./
+RUN npm install --silent
+
+COPY . .

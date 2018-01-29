@@ -1,4 +1,4 @@
-version: '2'
+version: '3.4'
 
 services:
   tu-django:
@@ -10,13 +10,16 @@ services:
     container_name: 'tu-django'
     labels:
       application: 'tu-django'
+    # temporarily use dev entry point:
+    command: bash docker/entrypoint.dev.sh
     env_file:
-      - server/env/base.env
+      - ./server/env/base.env
     expose:
       - '8001'
     depends_on:
       - tu-postgres
       - tu-redis
+      - tu-celery
 
   tu-postgres:
     image: postgres:latest
@@ -47,10 +50,25 @@ services:
       application: 'tu-nginx'
     volumes:
       - nginx-data-volume:/opt/tu/logs/nginx
+      - static-volume:/opt/tu/static
     ports:
       - '80:80'
+    command: bash scripts/entry-point.prod.sh
     depends_on:
       - tu-django
+      - tu-react
+
+  tu-react:
+    build:
+      context: ./client/
+      dockerfile: docker/Dockerfile-react
+    container_name: 'tu-react'
+    labels:
+      application: 'tu-react'
+    volumes:
+      - static-volume:/opt/tu/static/build
+      # TODO: create a new dir, don't use build itself
+    command: bash docker/entry-point.prod.sh
 
   tu-rabbitmq:
     image: rabbitmq:latest
@@ -80,3 +98,4 @@ services:
 volumes:
   db-data-volume:
   nginx-data-volume:
+  static-volume:

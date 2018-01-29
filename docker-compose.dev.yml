@@ -1,15 +1,15 @@
-version: '2'
+version: '3.4'
 
 services:
   tu-django:
     build:
       args:
-        - py_requirements=requirements.txt
+        - py_requirements=requirements/development.txt
     command: bash docker/entrypoint.dev.sh
     env_file:
-      - server/env/dev.env
+      - ./server/env/dev.env
     volumes:
-      - ./server/:/opt/tu/django/
+      - ./server/:/opt/tu/django
     ports:
       - '8001:8001'
 
@@ -23,24 +23,17 @@ services:
 
   tu-nginx:
     volumes:
-      - ./client/src/:/opt/tu/static
-      - ./nginx/configurations:/etc/nginx/configurations
-    command: bash entry-point.dev.sh
+      - ./nginx/configurations/:/etc/nginx/configurations
+    command: bash scripts/entry-point.dev.sh
 
-  tu-livereload:
-    build:
-      context: ./client/
-      dockerfile: docker/Dockerfile-livereload
-    container_name: 'tu-livereload'
-    labels:
-      application: 'tu-livereload'
-    volumes:
-      - ./client/:/opt/team-up/static
+  tu-react:
     expose:
-      - '4200'
+      - '3000'
     ports:
-      - '4200:4200'
-    command: npm run dev
+      - '3000:3000'
+    volumes:
+      - ./client/:/opt/tu/static
+    command: npm start
 
   tu-rabbitmq:
     ports:
@@ -49,4 +42,4 @@ services:
 
   tu-celery:
     volumes:
-      - ./server/:/opt/tu/celery/
+      - ./server/:/opt/tu/celery
