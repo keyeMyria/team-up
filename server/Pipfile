@@ -1,0 +1,37 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+asgi_redis = "*"
+Django = "*"
+channels = "*"
+python-dotenv = "*"
+django-redis = "*"
+celery = "*"
+"psycopg2" = "*"
+python-dateutil = "*"
+arrow = "*"
+djangorestframework = "*"
+"django-rest-framework-social-oauth2" = "*"
+django-filter = "*"
+django-rest-swagger = "*"
+django-jet = "*"
+django-health-check = "*"
+django-stdimage = "*"
+Pillow = "*"
+pytest = "*"
+pytest-django = {git = "https://github.com/gradam/pytest-django.git", editable = true, ref = "3.1.3"}
+Faker = "*"
+django-extensions = "*"
+django-debug-toolbar = "*"
+isort = "*"
+ptpython = "*"
+
+
+[dev-packages]
+
