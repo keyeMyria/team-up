@@ -1,12 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
-from django.utils.text import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 
 
 class Message(models.Model):
-    room = models.ForeignKey('chat.Room')
-    sender = models.ForeignKey('accounts.User')
+    room = models.ForeignKey('chat.Room', on_delete=models.CASCADE)
+    sender = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     content = models.TextField(_('Content of the message'))
     date = models.DateTimeField(_('Date'), default=timezone.now)
 
@@ -58,8 +58,8 @@ class ChatEvent(models.Model):
     )
 
     event = models.TextField(choices=EVENTS)
-    user = models.ForeignKey('accounts.User')
-    room = models.ForeignKey(Room)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     date = models.DateTimeField(_('Date'), default=timezone.now)
 
     class Meta:

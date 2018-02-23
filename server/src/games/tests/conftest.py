@@ -1,6 +1,6 @@
 from operator import attrgetter
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from common.generators import generate_league_of_legends_account_data, generate_user
 from common.testing import auth_headers

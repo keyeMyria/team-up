@@ -1,5 +1,14 @@
-from chat.consumers import ChatConsumer
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
 
-channel_routing = [
-    ChatConsumer.as_route(path=r'^/chat/(?P<room_id>\d+)/$')
-]
+
+application = ProtocolTypeRouter({
+
+    # WebSocket chat handler
+    "websocket": AuthMiddlewareStack(
+        URLRouter([
+            # ChatConsumer.as_route(path=r'^/chat/(?P<room_id>\d+)/$')
+        ])
+    )
+
+})

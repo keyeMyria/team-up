@@ -19,7 +19,7 @@ def image_processor(file_name, variations, storage):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField('accounts.User')
+    user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
     avatar = StdImageField(
         upload_to=UploadToUUID(path='avatars'),
         default='avatars/default_avatar.png',

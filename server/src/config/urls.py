@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', include('rest_framework_social_oauth2.urls')),
-    url(r'^api/', include(api_urlpatterns, namespace='api')),
+    url(r'^api/', include((api_urlpatterns, 'api'), namespace='api')),
     url(r'^health/', include('health_check.urls')),
 ]
 

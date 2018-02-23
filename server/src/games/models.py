@@ -1,10 +1,10 @@
 from django.db import models
-from django.utils.text import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class GameAccount(models.Model):
     username = models.TextField(max_length=100)
-    user_profile = models.ForeignKey('userprofiles.UserProfile')
+    user_profile = models.ForeignKey('userprofiles.UserProfile', on_delete=models.CASCADE)
 
     class Meta:
         abstract = True

@@ -5,7 +5,7 @@ from django.db.utils import IntegrityError
 from faker import Faker
 
 from accounts.models import User
-from chat.models import ChatEvent, Message, Room
+# from chat.models import ChatEvent, Message, Room
 from games.models import LeagueOfLegendsAccount
 
 
@@ -30,20 +30,20 @@ def generate_user(is_superuser=False, password=None):
             pass
 
 
-def generate_room():
-    return Room(name=Faker().word())
-
-
-def generate_message(user=None, room=None):
-    if user is None:
-        user = generate_user()
-    if room is None:
-        room = generate_room()
-    room.save()
-    user.save()
-    room.users.add(user)
-    content = Faker().text(max_nb_chars=100)
-    return Message(room=room, sender=user, content=content)
+# def generate_room():
+#     return Room(name=Faker().word())
+#
+#
+# def generate_message(user=None, room=None):
+#     if user is None:
+#         user = generate_user()
+#     if room is None:
+#         room = generate_room()
+#     room.save()
+#     user.save()
+#     room.users.add(user)
+#     content = Faker().text(max_nb_chars=100)
+#     return Message(room=room, sender=user, content=content)
 
 
 def generate_league_of_legends_account_data(user, credentials=None) -> dict:
@@ -66,13 +66,13 @@ def generate_league_of_legends_account_data(user, credentials=None) -> dict:
     return data
 
 
-def generate_chat_event(user=None, room=None):
-    if user is None:
-        user = generate_user()
-    if room is None:
-        room = generate_room()
-    room.save()
-    user.save()
-    room.users.add(user)
-    event = choice(['connect', 'disconnect'])
-    return ChatEvent(room=room, user=user, event=event)
+# def generate_chat_event(user=None, room=None):
+#     if user is None:
+#         user = generate_user()
+#     if room is None:
+#         room = generate_room()
+#     room.save()
+#     user.save()
+#     room.users.add(user)
+#     event = choice(['connect', 'disconnect'])
+#     return ChatEvent(room=room, user=user, event=event)

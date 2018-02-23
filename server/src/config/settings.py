@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'stdimage',
     # My apps
     'accounts.apps.AccountsConfig',
-    'chat.apps.ChatConfig',
+    # 'chat.apps.ChatConfig',
     'common.apps.CommonConfig',
     'games.apps.GamesConfig',
     'userprofiles.apps.UserprofilesConfig',
@@ -181,7 +181,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'PAGE_SIZE': 20,  # Max number of results returned from a list API call
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }
 
 AUTHENTICATION_BACKENDS = (
@@ -219,6 +218,8 @@ CHANNEL_LAYERS = {
 CHANNELS_API = {
     'DEFAULT_PERMISSION_CLASSES': ('channels_api.permissions.AllowAny',)
 }
+
+ASGI_APPLICATION = 'config.routing.application'
 
 # CELERY
 CELERY_TIMEZONE = TIME_ZONE

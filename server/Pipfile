@@ -25,13 +25,13 @@ django-health-check = "*"
 django-stdimage = "*"
 Pillow = "*"
 pytest = "*"
-pytest-django = {git = "https://github.com/gradam/pytest-django.git", editable = true, ref = "3.1.3"}
+pytest-django = {git = "https://github.com/gradam/pytest-django.git", editable = true, ref = "3.1.2.2"}
 Faker = "*"
-django-extensions = "*"
-django-debug-toolbar = "*"
-isort = "*"
-ptpython = "*"
 
 
 [dev-packages]
+isort = "*"
+ptpython = "*"
+django-debug-toolbar = "*"
+django-extensions = "*"
 
