@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'channels',
     'django_filters',
     'rest_framework_swagger',
+    'corsheaders',
     'health_check',  # required
     'health_check.db',  # stock Django health checkers
     'health_check.cache',
@@ -63,12 +64,18 @@ if DEBUG:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'team-up.com',
+    'localhost:80',
+)
 
 if DEBUG:
     MIDDLEWARE += [
