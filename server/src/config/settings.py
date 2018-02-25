@@ -207,7 +207,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 # Channels
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'ROUTING': 'config.routing.channel_routing',
         'CONFIG': {
             'hosts': [(os.environ.get('REDIS_HOST'), int(os.environ.get('REDIS_PORT')))]
