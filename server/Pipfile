@@ -5,6 +5,11 @@ verify_ssl = true
 name = "pypi"
 
 
+[requires]
+
+python_version = "3.6"
+
+
 [packages]
 
 channels-redis = "*"
@@ -23,15 +28,17 @@ django-rest-swagger = "*"
 django-jet = "*"
 django-health-check = "*"
 django-stdimage = "*"
-Pillow = "*"
-pytest = "*"
-pytest-django = {git = "https://github.com/gradam/pytest-django.git", editable = true, ref = "3.1.2.2"}
-Faker = "*"
+pillow = "*"
+django-cors-headers = "*"
 
 
 [dev-packages]
-isort = "*"
-ptpython = "*"
-django-debug-toolbar = "*"
-django-extensions = "*"
 
+pytest = "*"
+pytest-asyncio = "*"
+pytest-django = {git = "https://github.com/gradam/pytest-django.git", ref = "3.1.2.2", editable = true}
+faker = "*"
+django-extensions = "*"
+django-debug-toolbar = "*"
+ptpython = "*"
+isort = "*"
