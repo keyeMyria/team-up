@@ -1,0 +1,1 @@
+export { timeoutDelta } from './time';
