@@ -7,13 +7,13 @@ name = "pypi"
 
 [packages]
 
-asgi_redis = "*"
+channels-redis = "*"
 Django = "*"
 channels = "*"
 python-dotenv = "*"
 django-redis = "*"
 celery = "*"
-"psycopg2" = "*"
+"psycopg2-binary" = "*"
 python-dateutil = "*"
 arrow = "*"
 djangorestframework = "*"

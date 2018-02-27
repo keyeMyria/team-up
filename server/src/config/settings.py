@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'stdimage',
     # My apps
     'accounts.apps.AccountsConfig',
-    # 'chat.apps.ChatConfig',
+    'chatter.apps.ChatterConfig',
     'common.apps.CommonConfig',
     'games.apps.GamesConfig',
     'userprofiles.apps.UserprofilesConfig',

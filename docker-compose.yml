@@ -52,7 +52,7 @@ services:
       - nginx-data-volume:/opt/tu/logs/nginx
       - static-volume:/opt/tu/static
     ports:
-      - '80:80'
+      - '81:80'
     command: bash scripts/entry-point.prod.sh
     depends_on:
       - tu-django
