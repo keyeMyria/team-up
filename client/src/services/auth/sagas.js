@@ -2,7 +2,11 @@ import { delay } from 'redux-saga';
 import { fork, call, take, race, put } from 'redux-saga/effects';
 
 import { authActions, authActionTypes } from './actions';
-import { getAuthToken, getAuthTokenExpirationDate, setAuthToken } from './localStorage';
+import {
+  getAuthToken,
+  getAuthTokenExpirationDate,
+  setAuthToken
+} from './localStorage';
 import { authApi } from './api';
 import { signIn } from './signIn';
 import { signOut } from './signOut';
@@ -23,6 +27,12 @@ function* refreshTokenOnExpiry(_token) {
       yield call(delay, timeoutDelta(token.expires_in, -300)); // 5 minutes before
     } catch (error) {
       yield put(authActions.refreshTokenFailure(error));
+
+      yield call(delay, 5000);
+      // added some delay on failure, since otherwise it would create an infinite loop
+      // if the initial _token is (present) but there is no response from server
+
+      // TODO: check if refreshing old token works (it should not)
     }
   }
 }
@@ -35,13 +45,14 @@ function* authorizeOnRefresh() {
   if (token) {
     if (tokenExpirationDate > new Date()) {
       yield put(authActions.signInSuccess(token));
+      return token;
     } else {
       yield put(authActions.signInFailure('token expired'));
     }
   } else {
     yield put(authActions.signInFailure('no token in localstorage'));
   }
-  return token;
+  return null;
 }
 
 function* authorize() {
@@ -67,7 +78,10 @@ function* authorizeAndRefreshTokenOnExpiry() {
 
 function* authorizeSaga() {
   while (true) {
-    yield race([take(authActionTypes.SIGN_OUT), call(authorizeAndRefreshTokenOnExpiry)]);
+    yield race([
+      take(authActionTypes.SIGN_OUT),
+      call(authorizeAndRefreshTokenOnExpiry)
+    ]);
 
     yield call(signOut);
   }
