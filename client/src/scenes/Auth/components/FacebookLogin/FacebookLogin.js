@@ -1,38 +1,19 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from 'react';
 import FacebookLogin from 'react-facebook-login';
 
-import { authActions } from '../../../../services/auth';
+import './FacebookLogin.css';
 
-class FacebookLoginButton extends Component {
-  responseFacebook = (response) => {
-    this.props.signIn('facebook', response);
-  };
+const facebookLoginButton = props => (
+  <div>
+    <FacebookLogin
+      appId={process.env.REACT_APP_FB_APP_ID}
+      fields="name, email, picture"
+      callback={props.onSignIn}
+      cssClass="loginBtn loginBtn--facebook"
+      textButton="Log in With Facebook"
+      // onFailure?
+    />
+  </div>
+);
 
-  render() {
-    return (
-      <div>
-        <FacebookLogin
-          appId="1180108425454095" // TODO: hardcode it somewhere else
-          fields="name,email,picture"
-          callback={this.responseFacebook}
-          // onFailure?
-        />
-        <button onClick={() => this.props.signOut()}>SIGN OUT</button>
-      </div>
-    );
-  }
-}
-
-FacebookLoginButton.propTypes = {
-  signIn: PropTypes.func.isRequired,
-  signOut: PropTypes.func.isRequired
-};
-
-const mapDispatchToProps = dispatch => ({
-  signIn: (backend, payload) => dispatch(authActions.signIn(backend, payload)),
-  signOut: () => dispatch(authActions.signOut())
-});
-
-export default connect(null, mapDispatchToProps)(FacebookLoginButton);
+export default facebookLoginButton;
