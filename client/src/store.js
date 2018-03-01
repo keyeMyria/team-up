@@ -16,23 +16,15 @@ const sagaMidlleware = createSagaMiddleware();
 
 const getMiddleware = () => {
   if (process.env.NODE_ENV === 'production') {
-    // return applyMiddleware(
-    //   sagaMidlleware,
-    //   myRouterMiddleware,
-    //   promiseMiddleware,
-    //   localStorageMiddleware
-    // );
     return applyMiddleware(sagaMidlleware, myRouterMiddleware);
   }
-  // Enable additional logging in non-production environments.
-  // return applyMiddleware(
-  //   sagaMidlleware,
-  //   myRouterMiddleware,
-  //   promiseMiddleware,
-  //   localStorageMiddleware,
-  //   createLogger({ collapsed: true })
-  // );
-  return applyMiddleware(sagaMidlleware, myRouterMiddleware, createLogger({ collapsed: true }));
+
+  const logger = createLogger({
+    collapsed: true,
+    predicate: (getState, action) => !/^@@redux-form/.test(action.type)
+  });
+
+  return applyMiddleware(sagaMidlleware, myRouterMiddleware, logger);
 };
 
 const store = createStore(reducers, composeWithDevTools(getMiddleware()));
