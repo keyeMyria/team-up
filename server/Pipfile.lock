@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "aa6ab77cd0cf1bda928694706a68821db65c5877ed7b5a59219ffdb19ea2cd8a"
+            "sha256": "d2f8862af4c8a67779e97b67afbc7004cfb14b7df2adca4f43bea498643fa3e5"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -184,10 +184,10 @@
         },
         "django-cors-headers": {
             "hashes": [
-                "sha256:4e02be61ffaaab5917f1fd7cc3c305c4fb7ccd0156a649c96f49bc0a09c5f572",
-                "sha256:451bc37a514792c2b46c52362368f7985985933ecdbf1a85f82652579a5cbe01"
+                "sha256:0e9532628b3aa8806442d4d0b15e56112e6cfbef3735e13401935c98b842a2b4",
+                "sha256:c7ec4816ec49416517b84f317499d1519db62125471922ab78d670474ed9b987"
             ],
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         },
         "django-filter": {
             "hashes": [
@@ -216,10 +216,10 @@
         },
         "django-redis": {
             "hashes": [
-                "sha256:9660332cf9de5689a7ebbe0c623c4a0de79e0916a6ae867b5d0b94759bba46c9",
-                "sha256:5229da5b07ccb8d3e3e9ee098c0b7c03e20eba48634bc456697dd73d62c68b19"
+                "sha256:a90343c33a816073b735f0bed878eaeec4f83b75fcc0dce2432189b8ea130424",
+                "sha256:15b47faef6aefaa3f47135a2aeb67372da300e4a4cf06809c66ab392686a2155"
             ],
-            "version": "==4.8.0"
+            "version": "==4.9.0"
         },
         "django-rest-framework-social-oauth2": {
             "hashes": [
@@ -717,6 +717,12 @@
             "git": "https://github.com/gradam/pytest-django.git",
             "ref": "3.1.2.2"
         },
+        "pytest-sugar": {
+            "hashes": [
+                "sha256:ab8cc42faf121344a4e9b13f39a51257f26f410e416c52ea11078cdd00d98a2c"
+            ],
+            "version": "==0.9.1"
+        },
         "python-dateutil": {
             "hashes": [
                 "sha256:95511bae634d69bc7329ba55e646499a842bc4ec342ad54a8cdb65645a0aad3c",
@@ -751,6 +757,12 @@
                 "sha256:ce028444cfab83be538752a2ffdb56bc417b7784ff35bb9a3062413717807dec"
             ],
             "version": "==0.2.4"
+        },
+        "termcolor": {
+            "hashes": [
+                "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"
+            ],
+            "version": "==1.1.0"
         },
         "text-unidecode": {
             "hashes": [

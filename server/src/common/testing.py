@@ -27,24 +27,4 @@ class BaseViewTest:
 
     @pytest.fixture
     def list_url(self):
-        return reverse(f'{self.settings_class.view_name}-list')[len('server/'):]
-
-
-class CustomClient(Client):
-
-    def __getattribute__(self, name):
-        func = super().__getattribute__(name)
-        methods_to_wrap = ['get', 'post', 'head', 'options', 'put', 'patch', 'delete', 'trace']
-        if name in methods_to_wrap:
-            return self._prepare_path(func)
-        else:
-            return func
-
-    @staticmethod
-    def _prepare_path(func):
-        def wrapper(path, *args, **kwargs):
-            if path.startswith('/server'):
-                path = path[len('/server'):]
-            return func(path, *args, **kwargs)
-        return wrapper
-
+        return reverse(f'{self.settings_class.view_name}-list')

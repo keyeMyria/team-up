@@ -5,18 +5,16 @@ from chatter.models import Room, ChatEvent, Message
 
 
 class ChatConsumer(JsonWebsocketConsumer):
-    groups = ["broadcast"]
-
     def connect(self):
         # Called on connection. Either call
-        self.accept()
 
         self.user = self.scope['user']
-        self.room_id = self.scope['url_route']['room_id']
+
+        self.room_id = self.scope['url_route']['kwargs']['room_id']
         group = f'room_{self.room_id}'
         self.group_name = group
 
-        if not (self.user is not None and self.user.is_authenticated()):
+        if not (self.user is not None and self.user.is_authenticated):
             return self.close({'Error': 'Not authenticated user'})
 
         try:
@@ -56,6 +54,7 @@ class ChatConsumer(JsonWebsocketConsumer):
         Message.objects.create(room_id=self.room_id, sender=self.user, content=message)
 
     def disconnect(self, close_code):
+        return
         # Remove user from group
         self.channel_layer.group_discard(self.group_name, self.channel_name)
         # Send information about disconnect to the group

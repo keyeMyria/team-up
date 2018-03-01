@@ -13,7 +13,7 @@ python_version = "3.6"
 [packages]
 
 channels-redis = "*"
-Django = "*"
+django = "*"
 channels = "*"
 python-dotenv = "*"
 django-redis = "*"
@@ -30,6 +30,7 @@ django-health-check = "*"
 django-stdimage = "*"
 pillow = "*"
 django-cors-headers = "*"
+daphne = "*"
 
 
 [dev-packages]
@@ -42,3 +43,4 @@ django-extensions = "*"
 django-debug-toolbar = "*"
 ptpython = "*"
 isort = "*"
+pytest-sugar = "*"

@@ -1,3 +1,5 @@
+import secrets
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
@@ -66,3 +68,23 @@ class ChatEvent(models.Model):
         verbose_name = 'Chat event'
         verbose_name_plural = 'Chat events'
         get_latest_by = 'datetime'
+
+
+class TemporaryToken(models.Model):
+
+    token = models.CharField(max_length=32)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    created = models.DateTimeField(_('Created'), default=timezone.now)
+
+    class Meta:
+        verbose_name = 'Temporary token'
+        verbose_name_plural = 'Temporary tokens'
+
+    @classmethod
+    def generate(cls, user) -> 'TemporaryToken':
+        token = secrets.token_hex(30)
+        return cls(token=token, user=user)
+
+    def is_active(self):
+        if self.created > timezone.now() - timezone.timedelta(seconds=30):
+            return True

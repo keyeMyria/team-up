@@ -3,7 +3,6 @@ from oauth2_provider.models import Application
 
 from common.generators import generate_user
 from common.utils import create_user_token
-from common.testing import CustomClient
 
 
 @pytest.fixture
@@ -26,8 +25,3 @@ def application(admin_user):
         user=admin_user
     )
     return application
-
-
-@pytest.fixture
-def client():
-    return CustomClient()
