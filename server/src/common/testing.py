@@ -1,6 +1,7 @@
 import pytest
+from typing import Optional, Union
 from django.urls import reverse
-from django.test.client import Client
+from channels.testing import WebsocketCommunicator, ApplicationCommunicator
 
 from accounts.models import User
 from common.utils import create_user_token
@@ -28,3 +29,18 @@ class BaseViewTest:
     @pytest.fixture
     def list_url(self):
         return reverse(f'{self.settings_class.view_name}-list')
+
+
+class QSWebsocketCommunicator(WebsocketCommunicator):
+    def __init__(self, application, path, headers=None, subprotocols=None,
+                 query_string: Optional[Union[str, bytes]]=None):
+        if isinstance(query_string, str):
+            query_string = str.encode(query_string)
+        self.scope = {
+            "type": "websocket",
+            "path": path,
+            "headers": headers or [],
+            "subprotocols": subprotocols or [],
+            "query_string": query_string or ''
+        }
+        ApplicationCommunicator.__init__(self, application, self.scope)

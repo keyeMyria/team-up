@@ -28,6 +28,7 @@ class OAuthTokenAuthMiddleware:
         try:
             token = TemporaryToken.objects.select_related('user').get(token=token)
             if token.is_active():
+                token.delete()
                 return token.user
             else:
                 return AnonymousUser()

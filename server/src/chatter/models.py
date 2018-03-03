@@ -72,7 +72,7 @@ class ChatEvent(models.Model):
 
 class TemporaryToken(models.Model):
 
-    token = models.CharField(max_length=32)
+    token = models.TextField()
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     created = models.DateTimeField(_('Created'), default=timezone.now)
 

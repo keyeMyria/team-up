@@ -12,6 +12,7 @@ class ChatConsumer(JsonWebsocketConsumer):
 
         self.room_id = self.scope['url_route']['kwargs']['room_id']
         group = f'room_{self.room_id}'
+        rooms = list(Room.objects.all())
         self.group_name = group
 
         if not (self.user is not None and self.user.is_authenticated):
