@@ -8,9 +8,9 @@ app_name = 'accounts'
 router = DefaultRouter()
 router.register(r'', UserViewSet, base_name='users')
 
-urlpatterns = router.urls
-
-urlpatterns += [
+urlpatterns = [
     url(r'validate', ValidateUniqueFields.as_view()),
     url(r'change-password', ChangePassword.as_view())
 ]
+
+urlpatterns += router.urls
