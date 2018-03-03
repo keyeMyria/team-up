@@ -4,7 +4,6 @@ import { createLogger } from 'redux-logger';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 
-// import { promiseMiddleware, localStorageMiddleware } from './middleware';
 import history from './history';
 import reducers from './reducer';
 import rootSaga from './sagas';

@@ -8,7 +8,7 @@ const authState = {
 
 export function authReducer(state = authState, action) {
   switch (action.type) {
-    case authActionTypes.SIGN_IN_FULFILLED: {
+    case authActionTypes.SIGN_IN_SUCCESS: {
       const { token } = action;
       return {
         ...state,
@@ -17,7 +17,7 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.SIGN_IN_FAILED: {
+    case authActionTypes.SIGN_IN_FAILURE: {
       const { error } = action;
       return {
         ...state,
@@ -25,14 +25,14 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.SIGN_OUT_FULFILLED:
+    case authActionTypes.SIGN_OUT_SUCCESS:
       return {
         ...state,
         authenticated: false,
         token: null
       };
 
-    case authActionTypes.SIGN_OUT_FAILED: {
+    case authActionTypes.SIGN_OUT_FAILURE: {
       const { error } = action;
       return {
         ...state,
@@ -48,7 +48,7 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.REFRESH_TOKEN_FAIL: {
+    case authActionTypes.REFRESH_TOKEN_FAILURE: {
       const { error } = action;
       return {
         ...state,
