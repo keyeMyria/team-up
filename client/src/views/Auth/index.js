@@ -10,7 +10,7 @@ import Register from './views/Register';
 
 import './styles.css';
 
-Modal.setAppElement('#root');
+Modal.setAppElement('body');
 
 class Auth extends Component {
   state = {

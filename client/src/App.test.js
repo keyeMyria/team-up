@@ -8,7 +8,10 @@ import configureStore from 'redux-mock-store';
 import App from './App';
 
 const mockStore = configureStore([]);
-const store = mockStore({});
+
+const initialState = { auth: { authenticated: false } };
+
+const store = mockStore(initialState);
 const history = createHistory();
 
 describe('<App />', () => {

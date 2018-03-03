@@ -10,23 +10,23 @@ import rootSaga from './sagas';
 
 // Build the middleware for intercepting and dispatching navigation actions
 const myRouterMiddleware = routerMiddleware(history);
-
 const sagaMidlleware = createSagaMiddleware();
 
-const getMiddleware = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return applyMiddleware(sagaMidlleware, myRouterMiddleware);
-  }
+const middleware = [sagaMidlleware, myRouterMiddleware];
 
+if (process.env.NODE_ENV === 'development') {
   const logger = createLogger({
     collapsed: true,
     predicate: (getState, action) => !/^@@redux-form/.test(action.type)
   });
 
-  return applyMiddleware(sagaMidlleware, myRouterMiddleware, logger);
-};
+  middleware.push(logger);
+}
 
-const store = createStore(reducers, composeWithDevTools(getMiddleware()));
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
 sagaMidlleware.run(rootSaga);
 
 export default store;
