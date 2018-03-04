@@ -72,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_('Required. 3 to 15 characters. Letters and digits.'),
         validators=[username_validator],
         error_messages={
-            'unique': _("A user with that username already exists."),
+            'unique': _('A user with that username already exists.'),
         },
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
@@ -82,7 +82,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=False,
         unique=True,
         error_messages={
-            'unique': _("A user with that email already exists."),
+            'unique': _('A user with that email already exists.'),
         },
     )
     is_staff = models.BooleanField(
