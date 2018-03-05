@@ -88,6 +88,7 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
+      '@': path.resolve(__dirname, '../src'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -115,6 +116,8 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
+              configFile: path.resolve(__dirname, '../.eslintrc.react.js'),
+              useEslintrc: false
               
             },
             loader: require.resolve('eslint-loader'),
@@ -159,11 +162,19 @@ module.exports = {
           {
             test: /\.css$/,
             use: [
-              require.resolve('style-loader'),
+              {
+                loader: require.resolve('style-loader'),
+                options: {
+                  sourceMap: true
+                },
+              },
+              // require.resolve('style-loader'),
               {
                 loader: require.resolve('css-loader'),
                 options: {
                   importLoaders: 1,
+                  modules: true,
+                  localIdentName: '[path][name]__[local]--[hash:base64:5]'
                 },
               },
               {
