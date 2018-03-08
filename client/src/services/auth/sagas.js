@@ -68,8 +68,10 @@ export function* authorizeSaga() {
 }
 
 export function* signUpSaga() {
-  const { userData } = yield take(actionTypes.SIGN_UP);
-  yield call(signUp, userData);
+  while (true) {
+    const { userData } = yield take(actionTypes.SIGN_UP);
+    yield call(signUp, userData);
+  }
 }
 
 export function* signOutSaga() {
