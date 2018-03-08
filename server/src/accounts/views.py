@@ -7,20 +7,34 @@ from accounts.models import User
 from accounts.serializers import CreateUserSerializer, UserSerializer, ChangePasswordSerializer
 
 
-class UserViewSet(mixins.CreateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
-                  mixins.ListModelMixin,
-                  viewsets.GenericViewSet):
+class Users(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    Implements an endpoint for retrieving users
+    """
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'username'
 
-    def get_serializer_class(self):
-        serializer_class = self.serializer_class
-        if self.request.method == 'POST':
-            serializer_class = CreateUserSerializer
-        return serializer_class
+
+class CreateAccount(generics.CreateAPIView):
+    """
+    Implements an endpoint for creating new account
+    """
+    serializer_class = CreateUserSerializer
+    permission_classes = (AllowAny,)
+
+
+class MyAccount(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Implements an endpoint for retrieving, updating and deleting own account
+    """
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
 
 
 class ChangePassword(generics.UpdateAPIView):
@@ -39,7 +53,6 @@ class ChangePassword(generics.UpdateAPIView):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
-            # Check old password
             if not user.check_password(serializer.data.get("old_password")):
                 return Response({"old_password": ["Wrong password."]},
                                 status=status.HTTP_400_BAD_REQUEST)
