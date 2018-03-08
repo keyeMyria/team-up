@@ -1,4 +1,4 @@
-import { authActionTypes } from './actions';
+import { actionTypes } from './actions';
 
 const authState = {
   authenticated: false,
@@ -6,9 +6,24 @@ const authState = {
   error: null
 };
 
-export function authReducer(state = authState, action) {
+const reducer = (state = authState, action) => {
   switch (action.type) {
-    case authActionTypes.SIGN_IN_SUCCESS: {
+    case actionTypes.SIGN_UP_SUCCESS: {
+      // to be implemented
+      return {
+        ...state
+      };
+    }
+
+    case actionTypes.SIGN_UP_FAILURE: {
+      const { error } = action;
+      return {
+        ...state,
+        error
+      };
+    }
+
+    case actionTypes.SIGN_IN_SUCCESS: {
       const { token } = action;
       return {
         ...state,
@@ -17,7 +32,7 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.SIGN_IN_FAILURE: {
+    case actionTypes.SIGN_IN_FAILURE: {
       const { error } = action;
       return {
         ...state,
@@ -25,14 +40,14 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.SIGN_OUT_SUCCESS:
+    case actionTypes.SIGN_OUT_SUCCESS:
       return {
         ...state,
         authenticated: false,
         token: null
       };
 
-    case authActionTypes.SIGN_OUT_FAILURE: {
+    case actionTypes.SIGN_OUT_FAILURE: {
       const { error } = action;
       return {
         ...state,
@@ -40,7 +55,7 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.REFRESH_TOKEN_SUCCESS: {
+    case actionTypes.REFRESH_TOKEN_SUCCESS: {
       const { refreshedToken } = action;
       return {
         ...state,
@@ -48,7 +63,7 @@ export function authReducer(state = authState, action) {
       };
     }
 
-    case authActionTypes.REFRESH_TOKEN_FAILURE: {
+    case actionTypes.REFRESH_TOKEN_FAILURE: {
       const { error } = action;
       return {
         ...state,
@@ -59,4 +74,6 @@ export function authReducer(state = authState, action) {
     default:
       return state;
   }
-}
+};
+
+export default reducer;

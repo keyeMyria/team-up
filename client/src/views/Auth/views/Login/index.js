@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+import '@/views/Auth/components/Form/styles.css'; // TODO: clean styles
 import Form from './components/Form';
-import 'views/Auth/components/Form/styles.css'; // TODO: clean styles
 
 const Login = props => (
   <Fragment>
     <Form
       cssClass="authBox"
-      onSubmit={formData => {
-        props.onSignIn('team-up', formData); // CLOSE ON SUCCESS, ERROR ON FAILURE
+      onSubmit={(formData) => {
+        props.signIn('team-up', formData); // CLOSE ON SUCCESS, ERROR ON FAILURE
       }}
       onClose={props.onClose}
-      onFacebookSignIn={payload => props.onSignIn('facebook', payload)} // TODO: close on finish
+      onFacebookSignIn={payload => props.signIn('facebook', payload)} // TODO: close on finish
       onRegister={props.onRegister}
     />
 
@@ -26,11 +26,8 @@ const Login = props => (
       }}
     >
       <div className="spacedRow">
-        Don't have an account?<button
-          onClick={props.onRegister}
-          className="btn btn-dark"
-          style={{ marginLeft: 'auto' }}
-        >
+        Don&apos;t have an account?
+        <button onClick={props.onRegister} className="btn btn-dark" style={{ marginLeft: 'auto' }}>
           Sign Up
         </button>
       </div>
@@ -40,8 +37,9 @@ const Login = props => (
 );
 
 Login.propTypes = {
-  onSignIn: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired
+  signIn: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired
 };
 
 export default Login;

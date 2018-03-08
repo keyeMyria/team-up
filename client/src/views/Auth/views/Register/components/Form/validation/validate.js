@@ -1,4 +1,4 @@
-export const validate = values => {
+const validate = (values) => {
   const errors = {};
   if (!values.email) {
     errors.email = 'Field Required';
@@ -8,3 +8,5 @@ export const validate = values => {
   }
   return errors;
 };
+
+export default validate;

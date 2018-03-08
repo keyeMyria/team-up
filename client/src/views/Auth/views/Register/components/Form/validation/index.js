@@ -1,2 +1,4 @@
-export { validate } from './validate';
-export { asyncValidate } from './asyncValidate';
+import validate from './validate';
+import asyncValidate from './asyncValidate';
+
+export { validate, asyncValidate };

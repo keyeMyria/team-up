@@ -1,17 +1,10 @@
-import superagentPromise from 'superagent-promise';
-import _superagent from 'superagent';
+import _requests from '@/services/agent';
 
-const superagent = superagentPromise(_superagent, global.Promise);
-const responseBody = res => res.body;
-
-const ACCOUNTS_API_ROOT = process.env.REACT_APP_ACCOUNTS_API_ROOT;
+const prefix = process.env.REACT_APP_ACCOUNTS_ROOT;
+const requests = _requests({ prefix });
 
 const validationApi = {
-  validateFields: values =>
-    superagent
-      .get(`${ACCOUNTS_API_ROOT}/validate`)
-      .query(values)
-      .then(responseBody)
+  validateFields: values => requests.get('/validate', values)
 };
 
 export default validationApi;

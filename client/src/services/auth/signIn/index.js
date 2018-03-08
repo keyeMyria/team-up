@@ -1,16 +1,18 @@
 import { call, put } from 'redux-saga/effects';
 
-import { authActions } from '../actions';
+import { actions } from '../actions';
 import { setAuthToken } from '../localStorage';
-import { signInFacebook } from './facebook';
-import { signInTeamup } from './teamup';
+import signInFacebook from './facebook';
+import signInTeamup from './teamup';
 
-export function BackendException(message) {
-  this.message = message;
-  this.name = 'BackendException';
+export class BackendException extends Error {
+  constructor(...args) {
+    super(...args);
+    Error.captureStackTrace(this, BackendException);
+  }
 }
 
-export function* signIn(backend, payload) {
+function* signIn(backend, payload) {
   let token;
 
   try {
@@ -24,15 +26,15 @@ export function* signIn(backend, payload) {
         break;
       }
       default:
-        throw new BackendException(
-          `${backend} is not recognized as an authorization backend`
-        );
+        throw new BackendException(`${backend} is not recognized as an authorization backend`);
     }
     yield call(setAuthToken, token); // save to local storage
-    yield put(authActions.signInSuccess(token));
+    yield put(actions.signInSuccess(token));
   } catch (error) {
-    yield put(authActions.signInFailure(error));
+    yield put(actions.signInFailure(error));
   }
 
   return token;
 }
+
+export default signIn;

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 
+import '@/views/Auth/components/Form/styles.css'; // TODO: fix styles
+import InputField from '@/views/Auth/components/Form/InputField';
+
 import { validate, asyncValidate } from './validation';
 
-import InputField from 'views/Auth/components/Form/InputField';
-import 'views/Auth/components/Form/styles.css';
-
-const RegisterForm = props => {
+const RegisterForm = (props) => {
   const { handleSubmit, pristine, submitting } = props;
   return (
     <form className={props.cssClass} onSubmit={handleSubmit}>
@@ -19,11 +19,7 @@ const RegisterForm = props => {
             </div>
           </a>
 
-          <i
-            className="fa fa-times"
-            style={{ cursor: 'pointer' }}
-            onClick={props.onClose}
-          />
+          <i className="fa fa-times" style={{ cursor: 'pointer' }} onClick={props.onClose} />
         </div>
       </div>
 
@@ -37,6 +33,15 @@ const RegisterForm = props => {
           id="emailField"
           placeholder="Email"
           iconClass="fa fa-envelope"
+        />
+
+        <Field
+          type="text"
+          component={InputField}
+          name="username"
+          id="usernameField"
+          placeholder="Username"
+          iconClass="fa fa-user"
         />
 
         <Field
@@ -57,11 +62,7 @@ const RegisterForm = props => {
             </button>
           </div>
           <div className="right form-actions">
-            <button
-              type="submit"
-              className="btn btn-dark"
-              disabled={pristine || submitting}
-            >
+            <button type="submit" className="btn btn-dark" disabled={pristine || submitting}>
               Create an account
             </button>
           </div>
@@ -72,12 +73,20 @@ const RegisterForm = props => {
 };
 
 RegisterForm.propTypes = {
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  cssClass: PropTypes.string,
+  handleSubmit: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired
+};
+
+RegisterForm.defaultProps = {
+  cssClass: ''
 };
 
 export default reduxForm({
   form: 'registerForm',
   validate,
   asyncValidate,
-  asyncBlurFields: ['email']
+  asyncBlurFields: ['email', 'username']
 })(RegisterForm);

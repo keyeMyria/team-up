@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { authActions } from 'services/auth';
+import { authActions } from '@/services/auth';
 
-const signOut = props => {
-  return <button onClick={props.signOut}>Sign Out</button>;
-};
+const signOut = props => <button onClick={props.signOut}>Sign Out</button>;
 
 signOut.propTypes = {
   signOut: PropTypes.func.isRequired

@@ -1,90 +1,93 @@
 import { delay } from 'redux-saga';
-import { fork, call, take, race, put } from 'redux-saga/effects';
+import { call, take, fork, race, put } from 'redux-saga/effects';
 
-import { authActions, authActionTypes } from './actions';
-import {
-  getAuthToken,
-  getAuthTokenExpirationDate,
-  setAuthToken
-} from './localStorage';
-import { authApi } from './api';
-import { signIn } from './signIn';
-import { signOut } from './signOut';
-import { timeoutDelta } from '../../utils';
+import { timeoutDelta } from '@/utils';
+import { actions, actionTypes } from './actions';
+import { getAuthToken, setAuthToken } from './localStorage';
+import api from './api';
+import signUp from './signUp';
+import signIn from './signIn';
+import signOut from './signOut';
 
-function* refreshTokenOnExpiry(_token) {
-  let token = _token;
-
-  while (true) {
-    if (!token) break; // something went wrong, got null token
-
-    yield put(authActions.refreshToken());
-
-    try {
-      token = yield call(authApi.refreshToken, token.refresh_token);
-      yield call(setAuthToken, token); // save to local storage
-      yield put(authActions.refreshTokenSuccess(token));
-      yield call(delay, timeoutDelta(token.expires_in, -300)); // 5 minutes before
-    } catch (error) {
-      yield put(authActions.refreshTokenFailure(error));
-
-      yield call(delay, 5000);
-      // added some delay on failure, since otherwise it would create an infinite loop
-      // if the initial _token is (present) but there is no response from server
-
-      // TODO: check if refreshing old token works (it should not)
-    }
-  }
-}
-
-function* authorizeOnRefresh() {
-  yield take(authActionTypes.AUTO_SIGN_IN);
-  const token = yield call(getAuthToken);
-  const tokenExpirationDate = yield call(getAuthTokenExpirationDate);
-
-  if (token) {
-    if (tokenExpirationDate > new Date()) {
-      yield put(authActions.signInSuccess(token));
-      return token;
-    } else {
-      yield put(authActions.signInFailure('token expired'));
-    }
-  } else {
-    yield put(authActions.signInFailure('no token in localstorage'));
-  }
-  return null;
-}
-
-function* authorize() {
-  const { backend, payload } = yield take(authActionTypes.SIGN_IN);
-  const token = yield call(signIn, backend, payload);
+export function* refreshToken() {
+  const _token = yield call(getAuthToken);
+  const token = yield call(api.refreshToken, _token.refresh_token);
+  yield call(setAuthToken, token);
   return token;
 }
 
-function* authorizeAndRefreshTokenOnExpiry() {
+export function* tokenExpirationLoop(_token) {
+  let token = _token;
+  // let's wait until the first token is about to expire
+  yield call(delay, timeoutDelta(token.expires_in, -300)); // 5 minutes before
+
   while (true) {
-    const { token, refreshToken } = yield race({
-      token: call(authorize),
-      refreshToken: call(authorizeOnRefresh)
-    });
+    yield put(actions.refreshToken());
 
-    if (token) {
-      yield call(delay, timeoutDelta(token.expires_in, -300)); // 5 minutes before
+    try {
+      token = yield call(refreshToken);
+      yield put(actions.refreshTokenSuccess(token));
+      yield call(delay, timeoutDelta(token.expires_in, 0));
+    } catch (error) {
+      yield put(actions.refreshTokenFailure(error));
+      yield call(delay, 5000);
     }
-
-    yield call(refreshTokenOnExpiry, token || refreshToken);
   }
 }
 
-function* authorizeSaga() {
-  while (true) {
-    yield race([
-      take(authActionTypes.SIGN_OUT),
-      call(authorizeAndRefreshTokenOnExpiry)
-    ]);
+export function* signInSaga() {
+  const { backend, payload } = yield take(actionTypes.SIGN_IN);
+  const token = yield call(signIn, backend, payload);
+  return token; // might be null on signIn error
+}
 
+export function* autoSignInSaga() {
+  yield take(actionTypes.AUTO_SIGN_IN);
+  let token;
+
+  try {
+    token = yield call(refreshToken);
+    yield put(actions.signInSuccess(token));
+  } catch (error) {
+    yield put(actions.signInFailure(error));
+  }
+  return token; // might be null on refreshToken error
+}
+
+export function* authorizeSaga() {
+  const { signInToken, autoSignInToken } = yield race({
+    signInToken: call(signInSaga),
+    autoSignInToken: call(autoSignInSaga)
+  });
+
+  const token = signInToken || autoSignInToken;
+
+  if (token) {
+    yield call(tokenExpirationLoop, token);
+  }
+}
+
+export function* signUpSaga() {
+  const { userData } = yield take(actionTypes.SIGN_UP);
+  yield call(signUp, userData);
+}
+
+export function* signOutSaga() {
+  while (true) {
+    yield take(actionTypes.SIGN_OUT);
     yield call(signOut);
   }
 }
 
-export const authSagas = [fork(authorizeSaga)];
+// This saga starts up authorize and signUp sagas
+// and cancels them when the SIGN_OUT action is dispatched
+function* authSaga() {
+  yield fork(signUpSaga);
+  yield fork(signOutSaga);
+
+  while (true) {
+    yield race([take(actionTypes.SIGN_OUT), call(authorizeSaga)]);
+  }
+}
+
+export default authSaga;
