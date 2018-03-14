@@ -1,15 +1,10 @@
 import os
 
-import dotenv
 from kombu import Exchange, Queue
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -49,7 +44,7 @@ INSTALLED_APPS = [
     'stdimage',
     # My apps
     'accounts.apps.AccountsConfig',
-    # 'chat.apps.ChatConfig',
+    'chatter.apps.ChatterConfig',
     'common.apps.CommonConfig',
     'games.apps.GamesConfig',
     'userprofiles.apps.UserprofilesConfig',
@@ -105,7 +100,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -130,7 +124,6 @@ CACHES = {
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -148,7 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -161,7 +153,6 @@ USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -173,8 +164,6 @@ INTERNAL_IPS = ['*']
 LOGIN_URL = 'rest_framework:login'
 LOGOUT_URL = 'rest_framework:logout'
 LOGIN_REDIRECT_URL = 'documentation'
-
-FORCE_SCRIPT_NAME = '/server'
 
 
 # Rest framework
@@ -199,7 +188,6 @@ AUTHENTICATION_BACKENDS = (
     # Django
     'django.contrib.auth.backends.ModelBackend',
 )
-
 # Facebook configuration
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET')
@@ -214,8 +202,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 # Channels
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'asgi_redis.RedisChannelLayer',
-        'ROUTING': 'config.routing.channel_routing',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             'hosts': [(os.environ.get('REDIS_HOST'), int(os.environ.get('REDIS_PORT')))]
         }
