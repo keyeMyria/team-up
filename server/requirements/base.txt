@@ -4,7 +4,7 @@ channels==2.0.2
 python-dotenv==0.7.1
 django-redis==4.8.0
 celery==4.1.0
-psycopg2==2.7.4
+psycopg2-binary==2.7.4
 python-dateutil==2.6.1
 arrow==0.12.1
 djangorestframework==3.7.7
@@ -16,3 +16,4 @@ django-health-check==3.5.0
 django-stdimage==3.0.0
 Pillow==5.0.0
 django-cors-headers==2.1.0
+Twisted[tls,http2]
