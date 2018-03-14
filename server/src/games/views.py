@@ -1,3 +1,4 @@
+from django_filters import rest_framework as filters
 from rest_framework import mixins, viewsets
 
 from common.permissions import IsOwnerOrAdminOrReadOnly
@@ -16,6 +17,7 @@ class LeagueOfLegendsAccountViewSet(mixins.CreateModelMixin,
     # pytest having its own problems probably bcs of that:
     # https://github.com/encode/django-rest-framework/issues/5048
     queryset = LeagueOfLegendsAccount.objects.order_by('id')
+    filter_backends = (filters.DjangoFilterBackend,)
     filter_class = LeagueFilter
     permission_classes = [IsOwnerOrAdminOrReadOnly]
 

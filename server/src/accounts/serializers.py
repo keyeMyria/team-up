@@ -3,26 +3,30 @@ from rest_framework import serializers
 from accounts.models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email', 'age', 'gender', 'birthdate', 'first_name',
-                  'last_name',)
-        write_only_fields = ('password',)
-        read_only_fields = ('id', 'social_set', 'age', 'email')
+        fields = ('id', 'email', 'username', 'password')
         extra_kwargs = {
             'password': {'write_only': True}
         }
 
     def create(self, validated_data):
-        username = validated_data['username']
-        email = validated_data['email']
-        password = validated_data['password']
-        gender = validated_data.get('gender', None)
-        birthday = validated_data.get('birthday', None)
-
-        user = User.objects.create(username=username, email=email, gender=gender, birthday=birthday)
-        user.set_password(password)
-        user.save()
-
+        user = User.objects.create_user(**validated_data)
         return user
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'age', 'gender', 'birthdate', 'first_name',
+                  'last_name')
+        read_only_fields = ('id', 'age', 'email')
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

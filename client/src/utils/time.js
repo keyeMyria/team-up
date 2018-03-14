@@ -4,4 +4,5 @@
  * @param  {number} delta               Delta time (+/-) in seconds
  * @returns {number}                    Timeout + delta (in miliseconds)
  */
+// eslint-disable-next-line import/prefer-default-export
 export const timeoutDelta = (t, delta = 0) => (t + delta) * 1000;

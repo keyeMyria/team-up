@@ -1,22 +1,22 @@
 import { call, put } from 'redux-saga/effects';
 
-import { authActions } from '../actions';
-import { authApi } from '../api';
 import { getAuthToken, removeAuthToken } from '../localStorage';
+import { actions } from '../actions';
+import api from '../api';
 
 function* signOut() {
   try {
     const token = yield call(getAuthToken);
     if (token) {
+      yield call(api.revokeToken, token.access_token);
       yield call(removeAuthToken);
-      yield call(authApi.revokeToken, token.access_token);
-      // TODO: rethink the order of these calls, since if the error happens in the call api,
-      // you can't revoke the token anymore
     }
-    yield put(authActions.signOutSuccess());
+    // for now, if token is already gone, dispatch success,
+    // since it changes auth.authenticated flag
+    yield put(actions.signOutSuccess());
   } catch (error) {
-    yield put(authActions.signOutFailure(error));
+    yield put(actions.signOutFailure(error));
   }
 }
 
-export { signOut };
+export default signOut;

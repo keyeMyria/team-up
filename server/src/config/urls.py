@@ -30,6 +30,7 @@ schema_view = user_passes_test(is_admin)(get_swagger_view(title='VeeU API'))
 api_urlpatterns = [
     url(r'^games/', include('games.urls', namespace='games')),
     url(r'^userprofiles/', include('userprofiles.urls', namespace='userprofiles')),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
 ] + chatter_urlpatterns
 
 urlpatterns = [

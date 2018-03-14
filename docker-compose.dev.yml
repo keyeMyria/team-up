@@ -33,7 +33,7 @@ services:
       - '3000:3000'
     volumes:
       - ./client/:/opt/tu/static
-    command: npm start
+    command: bash -c "npm rebuild node-sass >/dev/null && npm start"
 
   tu-rabbitmq:
     ports:

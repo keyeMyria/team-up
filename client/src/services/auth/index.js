@@ -1,5 +1,6 @@
-export { authActionTypes } from './actions';
-export { authActions } from './actions';
-export { authReducer } from './reducer';
-export { authSagas } from './sagas';
-export { authApi } from './api';
+import { actionTypes as authActionTypes, actions as authActions } from './actions';
+import authReducer from './reducer';
+import authSaga from './sagas';
+import authApi from './api';
+
+export { authActionTypes, authActions, authReducer, authSaga, authApi };

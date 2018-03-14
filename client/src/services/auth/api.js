@@ -1,76 +1,47 @@
-import superagentPromise from 'superagent-promise';
-import _superagent from 'superagent';
+import _requests from '@/services/agent';
 
-const superagent = superagentPromise(_superagent, global.Promise);
-
-// const agent = request.agent()
-//   .use(plugin)
-//   .auth(shared);
-
-// await agent.get('/with-plugin-and-auth');
-// await agent.get('/also-with-plugin-and-auth');
-
-// add superagent-use? with superagent-prefix and prefix every single auth request
-
-const responseBody = res => res.body;
+const prefix = process.env.REACT_APP_AUTH_ROOT;
+const requests = _requests({ prefix });
 
 const appConfig = {
   client_id: process.env.REACT_APP_CLIENT_ID,
   client_secret: process.env.REACT_APP_CLIENT_SECRET
 };
 
-const AUTH_API_ROOT = process.env.REACT_APP_AUTH_API_ROOT;
-
 const authApi = {
   getToken: (username, password) =>
-    superagent
-      .post(`${AUTH_API_ROOT}/token`)
-      .send({
-        ...appConfig,
-        grant_type: 'password',
-        username,
-        password
-      })
-      .then(responseBody),
+    requests.post('/token', {
+      ...appConfig,
+      grant_type: 'password',
+      username,
+      password
+    }),
 
   refreshToken: refreshToken =>
-    superagent
-      .post(`${AUTH_API_ROOT}/token`)
-      .send({
-        ...appConfig,
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken
-      })
-      .then(responseBody),
+    requests.post('/token', {
+      ...appConfig,
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken
+    }),
 
   convertToken: (backend, token) =>
-    superagent
-      .post(`${AUTH_API_ROOT}/convert-token`)
-      .send({
-        ...appConfig,
-        grant_type: 'convert_token',
-        backend,
-        token
-      })
-      .then(responseBody),
+    requests.post('/convert-token', {
+      ...appConfig,
+      grant_type: 'convert_token',
+      backend,
+      token
+    }),
 
   revokeToken: token =>
-    superagent
-      .post(`${AUTH_API_ROOT}/revoke-token`)
-      .send({
-        ...appConfig,
-        token
-      })
-      .then(responseBody),
+    requests.post('/revoke-token', {
+      ...appConfig,
+      token
+    }),
 
   invalidateSessions: token =>
-    superagent
-      .post(`${AUTH_API_ROOT}/invalidate-sessions`)
-      .send({
-        client_id: appConfig.client_id
-      })
-      .set('Authorization', `Bearer ${token}`)
-      .then(responseBody)
+    requests.post('/invalidate-sessions', {
+      client_id: appConfig.client_id
+    })
 };
 
-export { authApi };
+export default authApi;
