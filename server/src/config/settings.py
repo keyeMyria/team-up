@@ -1,6 +1,5 @@
 import os
 
-import dotenv
 from kombu import Exchange, Queue
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

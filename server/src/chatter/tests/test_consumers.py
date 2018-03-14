@@ -1,41 +1,48 @@
 import pytest
-from common.testing import QSWebsocketCommunicator
 
+from common.testing import QSWebsocketCommunicator
 from config.routing import application
 from chatter.models import TemporaryToken
-from channels.db import database_sync_to_async
 
 
-def get_path(room_id):
+def get_path(room_id) -> str:
     return f'/chat/{room_id}/'
 
 
 @pytest.fixture
 def path(room):
-    room.save()
     return get_path(room.id)
 
 
 @pytest.fixture
 def temp_token(normal_user):
-    return TemporaryToken.generate(normal_user)
+    token = TemporaryToken.generate(normal_user)
+    token.save()
+    return token
 
 
-@pytest.mark.django_db
-@pytest.mark.asyncio
-async def test_get_connected_client(path, room, temp_token, normal_user, db):
-    await save(room, db)
-    assert room.id == path
-    room.users.add(normal_user)
-    temp_token.save()
-
-    #TODO: set query string with temp token
-    communicator = QSWebsocketCommunicator(application, path, query_string=f'token={temp_token.token}')
-    connected, subprotocol = await communicator.connect()
-    assert connected
-    await communicator.disconnect()
+def get_query_string(temp_token: TemporaryToken) -> str:
+    return f'token={temp_token.token}'
 
 
-@database_sync_to_async
-def save(room, db):
-    return room.save()
+# @pytest.mark.django_db
+# class TestConnect:
+#
+#     @pytest.mark.asyncio
+#     async def test_get_connected_client(self, path, room_with_user, temp_token):
+#         assert get_path(room_with_user.id) == path
+#
+#         communicator = QSWebsocketCommunicator(application, path, query_string=get_query_string(temp_token))
+#         connected, subprotocol = await communicator.connect()
+#         assert connected
+#         await communicator.disconnect()
+
+#
+# @pytest.mark.asyncio
+# async def test_connect_not_allowed(path, temp_token):
+#     communicator = QSWebsocketCommunicator(application, path, query_string=get_query_string(temp_token))
+#     connected, subprotocol = await communicator.connect()
+#
+#     assert not connected
+#     await communicator.disconnect()
+

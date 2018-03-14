@@ -5,7 +5,16 @@ from common.generators import generate_chat_event, generate_message, generate_ro
 
 @pytest.fixture
 def room():
-    return generate_room()
+    room = generate_room()
+    room.save()
+    return room
+
+
+@pytest.fixture
+def room_with_user(room, normal_user):
+    room.users.add(normal_user)
+    yield room
+    room.users.remove(normal_user)
 
 
 @pytest.fixture

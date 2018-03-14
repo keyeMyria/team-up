@@ -7,7 +7,9 @@ from common.utils import create_user_token
 
 @pytest.fixture
 def normal_user():
-    return generate_user()
+    user = generate_user()
+    user.save()
+    return user
 
 
 @pytest.fixture
