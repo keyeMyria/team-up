@@ -1,8 +1,9 @@
 import json
 
 import pytest
+from django.test import Client
 
-from common.testing import BaseViewTest, CustomClient
+from common.testing import BaseViewTest
 from games.tests.conftest import AccountManager, LeagueOfLegendsSettings
 
 
@@ -16,7 +17,7 @@ class BaseTestAccountViewSet(BaseViewTest):
         ('own', 'normal', False, 201),
         ('own', 'admin', False, 201)
     ])
-    def test_can_create_account(self, client: CustomClient, mgr, list_url,
+    def test_can_create_account(self, client: Client, mgr, list_url,
                                 affiliation, user_type, create, status_code):
         """
         POST /api/games/<game>/
@@ -32,7 +33,7 @@ class BaseTestAccountViewSet(BaseViewTest):
         ('own', 'admin', True, 200),
         ('else\'s', 'admin', True, 200),
     ])
-    def test_can_retrieve_account(self, client: CustomClient, mgr,
+    def test_can_retrieve_account(self, client: Client, mgr,
                                   affiliation, user_type, create, status_code):
         """
         GET /api/games/<game>/{id}/
@@ -49,7 +50,7 @@ class BaseTestAccountViewSet(BaseViewTest):
         ('else\'s', 'admin', True, 204),
 
     ])
-    def test_can_delete_account(self, client: CustomClient, mgr,
+    def test_can_delete_account(self, client: Client, mgr,
                                 affiliation, user_type, create, status_code):
         """
         DELETE /api/games/<game>/{id}/
@@ -72,7 +73,7 @@ class BaseTestAccountViewSet(BaseViewTest):
         'division',
         'server',
     ])
-    def test_can_patch_update_account(self, client: CustomClient, mgr, key,
+    def test_can_patch_update_account(self, client: Client, mgr, key,
                                       affiliation, user_type, create, status_code):
         """
         PATCH /api/games/<game>/{id}/
@@ -94,7 +95,7 @@ class BaseTestAccountViewSet(BaseViewTest):
         ('own', 'admin', True, 200),
         ('else\'s', 'admin', True, 200),
     ])
-    def test_can_put_update_account(self, client: CustomClient, mgr,
+    def test_can_put_update_account(self, client: Client, mgr,
                                     affiliation, user_type, create, status_code):
         """
         PUT /api/games/<game>/{id}/
@@ -113,7 +114,7 @@ class BaseTestAccountViewSet(BaseViewTest):
         ('own', 'admin', True, 400),
         ('else\'s', 'admin', True, 400),
     ])
-    def test_cannot_create_duplicate_account(self, client: CustomClient, mgr, list_url,
+    def test_cannot_create_duplicate_account(self, client: Client, mgr, list_url,
                                              affiliation, user_type, create, status_code):
         """
         POST /api/games/league/

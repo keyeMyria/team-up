@@ -23,13 +23,15 @@ from rest_framework_swagger.views import get_swagger_view
 
 from common.permissions import is_admin
 
+from chatter.urls import urlpatterns as chatter_urlpatterns
+
 schema_view = user_passes_test(is_admin)(get_swagger_view(title='VeeU API'))
 
 api_urlpatterns = [
     url(r'^games/', include('games.urls', namespace='games')),
     url(r'^userprofiles/', include('userprofiles.urls', namespace='userprofiles')),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-]
+] + chatter_urlpatterns
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='documentation', permanent=False)),
