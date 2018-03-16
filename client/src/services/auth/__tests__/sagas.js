@@ -81,6 +81,7 @@ describe('autoSignInSaga', () => {
       .provide([[matchers.call.fn(refreshToken), throwError(error)]])
       .dispatch(actions.autoSignIn())
       .call.fn(refreshToken)
+      .call.fn(removeAuthToken)
       .put(actions.signInFailure(error))
       .returns(undefined)
       .run();
