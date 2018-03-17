@@ -1,7 +1,7 @@
 from channels.db import database_sync_to_async
 
 from common.exceptions import ClientError
-from chatter.models import Room, Message, ChatEvent
+from chat.models import Room, Message, ChatEvent
 
 
 # This decorator turns this function from a synchronous function into an async one

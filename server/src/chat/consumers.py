@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from common.exceptions import ClientError
-from chatter.utils import get_room_or_error, save_message, add_chat_event
+from chat.utils import get_room_or_error, save_message, add_chat_event
 
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):

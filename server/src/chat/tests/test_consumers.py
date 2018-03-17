@@ -2,7 +2,7 @@ import pytest
 
 from common.testing import QSWebsocketCommunicator
 from config.routing import application
-from chatter.models import TemporaryToken
+from chat.models import TemporaryToken
 
 
 def get_path(room_id) -> str:

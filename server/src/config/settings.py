@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'stdimage',
     # My apps
     'accounts.apps.AccountsConfig',
-    'chatter.apps.ChatterConfig',
+    'chat.apps.ChatConfig',
     'common.apps.CommonConfig',
     'games.apps.GamesConfig',
     'userprofiles.apps.UserprofilesConfig',
@@ -69,7 +69,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'team-up.com',
-    'localhost:80',
+    'localhost',
 )
 
 if DEBUG:

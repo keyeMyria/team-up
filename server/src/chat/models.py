@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Message(models.Model):
-    room = models.ForeignKey('chatter.Room', on_delete=models.CASCADE)
+    room = models.ForeignKey('chat.Room', on_delete=models.CASCADE)
     sender = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     content = models.TextField(_('Content of the message'))
     datetime = models.DateTimeField(_('Date'), default=timezone.now)

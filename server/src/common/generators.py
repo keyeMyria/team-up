@@ -5,7 +5,7 @@ from django.db.utils import IntegrityError
 from faker import Faker
 
 from accounts.models import User
-from chatter.models import ChatEvent, Message, Room
+from chat.models import ChatEvent, Message, Room
 from games.models import LeagueOfLegendsAccount
 
 

@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='message',
             name='room',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chatter.Room'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chat.Room'),
         ),
         migrations.AddField(
             model_name='message',
@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chatevent',
             name='room',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chatter.Room'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='chat.Room'),
         ),
         migrations.AddField(
             model_name='chatevent',
