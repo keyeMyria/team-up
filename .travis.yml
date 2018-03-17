@@ -25,6 +25,7 @@ before_install:
 
   # Build and start your containers.
   - make prepare-tests
+  - make wait-for-all
 
   # You will want this for logging. If one of your containers does not build for
   # whatever reason it's best to report that now before your tests start

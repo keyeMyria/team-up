@@ -189,3 +189,6 @@ test:
 # Only in dev mode local changes will be used after the reload
 reload-nginx:
 	@docker exec tu-nginx nginx -s reload
+
+wait-for-all:
+	@bash wait_for_django.sh
