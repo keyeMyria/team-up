@@ -3,7 +3,7 @@ import { call, take, fork, race, put } from 'redux-saga/effects';
 
 import { timeoutDelta } from '@/utils';
 import { actions, actionTypes } from './actions';
-import { getAuthToken, setAuthToken } from './localStorage';
+import { getAuthToken, setAuthToken, removeAuthToken } from './localStorage';
 import api from './api';
 import signUp from './signUp';
 import signIn from './signIn';
@@ -49,6 +49,7 @@ export function* autoSignInSaga() {
     token = yield call(refreshToken);
     yield put(actions.signInSuccess(token));
   } catch (error) {
+    yield call(removeAuthToken);
     yield put(actions.signInFailure(error));
   }
   return token; // might be null on refreshToken error
@@ -68,8 +69,10 @@ export function* authorizeSaga() {
 }
 
 export function* signUpSaga() {
-  const { userData } = yield take(actionTypes.SIGN_UP);
-  yield call(signUp, userData);
+  while (true) {
+    const { userData } = yield take(actionTypes.SIGN_UP);
+    yield call(signUp, userData);
+  }
 }
 
 export function* signOutSaga() {

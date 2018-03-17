@@ -81,6 +81,7 @@ describe('autoSignInSaga', () => {
       .provide([[matchers.call.fn(refreshToken), throwError(error)]])
       .dispatch(actions.autoSignIn())
       .call.fn(refreshToken)
+      .call.fn(removeAuthToken)
       .put(actions.signInFailure(error))
       .returns(undefined)
       .run();
@@ -152,24 +153,25 @@ describe('signUpSaga', () => {
     expectSaga(signUpSaga)
       .dispatch(actions.signUp(userData))
       .call(signUp, userData)
-      .run());
+
+      // and waits for another SIGN_UP
+      .take(actionTypes.SIGN_UP)
+      .silentRun());
 });
 
 describe('signOutSaga', () => {
-  it('takes every SIGN_OUT and calls signOut', () =>
+  it('calls signOut on every SIGN_OUT action', () =>
     expectSaga(signOutSaga)
-      .provide([[matchers.call.fn(signOut)]])
-      // on SIGN_OUT dispatch
       .dispatch(actions.signOut())
-      // it calls signOut
       .call.fn(signOut)
+
       // and waits for another SIGN_OUT
       .take(actionTypes.SIGN_OUT)
       .silentRun());
 });
 
 describe('authSaga', () => {
-  it('forks signOutSaga and keeps starting races after SIGN_OUT dispatch', () => {
+  it('forks sagas and keeps starting races after dispatching SIGN_OUT', () => {
     const raceEffects = [matchers.take(actionTypes.SIGN_OUT), matchers.call(authorizeSaga)];
 
     return expectSaga(authSaga)
