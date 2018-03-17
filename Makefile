@@ -178,7 +178,7 @@ monitor-dying:
 # Tests
 # Starts containers so that we are ready to run tests in them
 prepare-tests:
-	-@docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 # Run tests
 test:
 	@docker exec -t tu-django bash -c "PYTHONDONTWRITEBYTECODE=1 pytest src/"
