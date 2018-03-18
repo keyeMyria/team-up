@@ -181,10 +181,14 @@ prepare-tests:
 	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 # Run tests
 test:
-	@docker exec -t tu-django pytest src/
+	@docker exec -t tu-django bash -c "PYTHONDONTWRITEBYTECODE=1 pytest src/"
+	@docker exec -t tu-react bash -c "CI=true npm test"
 
 
 # Reloads
 # Only in dev mode local changes will be used after the reload
 reload-nginx:
 	@docker exec tu-nginx nginx -s reload
+
+wait-for-all:
+	@bash wait_for_django.sh
