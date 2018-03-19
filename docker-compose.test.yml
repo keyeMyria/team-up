@@ -10,4 +10,4 @@ services:
     command: bash scripts/entry-point.test.sh
 
   tu-react:
-    command: sleep infinity
+    command: bash docker/entry-point.test.sh

@@ -9,7 +9,7 @@ from chat.models import ChatEvent, Message, Room
 from games.models import LeagueOfLegendsAccount
 
 
-def generate_user(is_superuser=False, password=None):
+def generate_user(is_superuser=False, password=None, save=True):
     fake = Faker()
 
     while True:
@@ -22,12 +22,16 @@ def generate_user(is_superuser=False, password=None):
         email = simple_profile['mail']
         gender = simple_profile['sex']
         password = password if password else 'haslo1234'
-        try:
-            return User.objects.create(username=username, first_name=first_name, password=password,
-                                       last_name=last_name, email=email, is_superuser=is_superuser,
-                                       is_staff=is_superuser, birthdate=birthdate, gender=gender)
-        except IntegrityError:
-            pass
+        user_data = dict(username=username, first_name=first_name, password=password,
+                         last_name=last_name, email=email, is_superuser=is_superuser,
+                         is_staff=is_superuser, birthdate=birthdate, gender=gender)
+        if save:
+            try:
+                return User.objects.create(**user_data)
+            except IntegrityError:
+                pass
+        else:
+            return User(**user_data)
 
 
 def generate_room():

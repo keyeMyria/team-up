@@ -180,10 +180,16 @@ monitor-dying:
 prepare-tests:
 	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 # Run tests
-test:
-	@docker exec -t tu-django bash -c "PYTHONDONTWRITEBYTECODE=1 pytest src/"
+
+test-server:
+	@docker exec -t tu-django bash -c "PYTHONDONTWRITEBYTECODE=1 pytest src/ --cov=src/"
+
+test-client:
 	@docker exec -t tu-react bash -c "CI=true npm test"
 
+test:
+	@make test-server
+	@make test-client
 
 # Reloads
 # Only in dev mode local changes will be used after the reload

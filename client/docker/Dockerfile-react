@@ -6,7 +6,7 @@ WORKDIR /opt/tu/static
 
 # use only in prod mode to speed up dev build time
 # node_modules are shared with host in dev mode
-# COPY package.json ./
-# RUN npm install --silent
+ COPY package.json ./
+ RUN npm install --silent
 
 COPY . .
