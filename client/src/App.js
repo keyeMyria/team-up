@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { authActions } from '@/services/auth';
 
 import Layout from '@/views/Layout';
+import Start from '@/views/Start';
 
 // TEMPORARY IMPORTS - TESTING
 import Auth from '@/views/Auth';
@@ -18,10 +20,7 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <div id="main">
-          {!this.props.isAuthenticated && <Auth />}
-          {this.props.isAuthenticated && <SignOut />}
-        </div>
+        <Route exact path='/' component={Start}/>
       </Layout>
     );
   }
