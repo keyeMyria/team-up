@@ -60,15 +60,3 @@ class TestChatCommunicator:
     #     response = await connected_communicator.receive_json_from()
     #     assert response == {'join': str(room_with_user.id), 'name': room_with_user.name}
     #     assert normal_user in room_with_user.users.all()
-
-    # @pytest.mark.asyncio
-    # async def test_send_message(self, connected_communicator, room_with_user):
-    #     await connected_communicator.send_json_to({'command': 'join', 'room': room_with_user.id})
-    #     response = await connected_communicator.receive_json_form()
-    #     assert response == {'join': str(room_with_user.id), 'name': room_with_user.name}
-    #
-    # @pytest.mark.asyncio
-    # async def test_join_room(self, connected_communicator, room_with_user):
-    #     await connected_communicator.send_json_to({'command': 'join', 'room': room_with_user.id})
-    #     response = await connected_communicator.receive_json_form()
-    #     assert response == {'join': str(room_with_user.id), 'name': room_with_user.name}
