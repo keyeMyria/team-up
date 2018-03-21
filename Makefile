@@ -179,11 +179,10 @@ monitor-dying:
 # Starts containers so that we are ready to run tests in them
 prepare-tests:
 	-@docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+
 # Run tests
-
 test-server:
-	@docker exec -t tu-django bash -c "PYTHONDONTWRITEBYTECODE=1 pytest src/ --cov=src/"
-
+	@docker exec -t tu-django bash -c "PYTHONDONTWRITEBYTECODE=1 pytest --cov=src/ --cov-report term-missing --cov-report html src/"
 test-client:
 	@docker exec -t tu-react bash -c "CI=true npm test"
 
