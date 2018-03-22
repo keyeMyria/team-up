@@ -8,5 +8,6 @@ python manage.py migrate
 
 python manage.py createsu
 python manage.py create_oauth_app
+touch /tmp/.done.info
 
 daphne -b 0.0.0.0 -p 8001 config.asgi:application

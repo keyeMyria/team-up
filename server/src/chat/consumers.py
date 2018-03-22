@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from common.exceptions import ClientError
-from chatter.utils import get_room_or_error, save_message, add_chat_event
+from chat.utils import get_room_or_error, save_message, add_chat_event
 
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):
@@ -38,6 +38,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 await self.leave_room(content['room'])
             elif command == 'send':
                 await self.send_room(content['room'], content['message'])
+            else:
+                await self.send_json({'error': 'command unknown'})
         except ClientError as e:
             await self.send_json({'error': e.code})
 
@@ -117,7 +119,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             }
         )
         await save_message(room_id, self.user, message)
-
 
     # These helper methods are named by the types we send - so chat.join becomes chat_join
     async def chat_join(self, event):

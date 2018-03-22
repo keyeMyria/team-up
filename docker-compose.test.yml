@@ -10,7 +10,4 @@ services:
     command: bash scripts/entry-point.test.sh
 
   tu-react:
-    command: npm test
-
-#    env_file:
-#      - server/env/test.env
+    command: bash docker/entry-point.test.sh

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from chatter.models import Message, Room, ChatEvent, TemporaryToken
+from chat.models import Message, Room, ChatEvent, TemporaryToken
 
 admin.site.register(Room)
 admin.site.register(ChatEvent)

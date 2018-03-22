@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from chatter.models import TemporaryToken
+from chat.models import TemporaryToken
 
 
 class TemporaryTokenView(APIView):

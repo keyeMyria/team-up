@@ -9,6 +9,7 @@ import history from './history';
 
 import App from './App';
 import './styles/index.css';
+import './styles/colors.css';
 
 ReactDOM.render(
   <Provider store={store}>

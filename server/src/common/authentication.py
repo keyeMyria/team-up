@@ -2,7 +2,7 @@ import urllib.parse as url_parse
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AnonymousUser
-from chatter.models import TemporaryToken
+from chat.models import TemporaryToken
 
 
 class OAuthTokenAuthMiddleware:

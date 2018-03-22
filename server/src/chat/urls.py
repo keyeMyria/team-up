@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from chatter.views import TemporaryTokenView
+from chat.views import TemporaryTokenView
 
 app_name = 'games'
 
