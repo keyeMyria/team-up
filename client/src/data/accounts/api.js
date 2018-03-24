@@ -17,7 +17,9 @@ const accountsApi = {
 
   updateMyAccount: accountData => requests.put('/me', accountData),
 
-  deleteMyAccount: () => requests.delete('/me')
+  deleteMyAccount: () => requests.delete('/me'),
+
+  validateFields: values => requests.get('/validate', values)
 };
 
 export default accountsApi;

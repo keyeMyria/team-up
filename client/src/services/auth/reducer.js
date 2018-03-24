@@ -2,6 +2,7 @@ import { actionTypes } from './actions';
 
 const authState = {
   authenticated: false,
+  loading: true,
   token: null,
   error: null
 };
@@ -23,11 +24,26 @@ const reducer = (state = authState, action) => {
       };
     }
 
+    case actionTypes.AUTO_SIGN_IN: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+
+    case actionTypes.SIGN_IN: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+
     case actionTypes.SIGN_IN_SUCCESS: {
       const { token } = action;
       return {
         ...state,
         authenticated: true,
+        loading: false,
         token
       };
     }
@@ -36,6 +52,7 @@ const reducer = (state = authState, action) => {
       const { error } = action;
       return {
         ...state,
+        loading: false,
         error
       };
     }
