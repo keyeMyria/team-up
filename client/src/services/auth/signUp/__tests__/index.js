@@ -2,7 +2,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import api from '@/data/Account/api';
+import api from '@/data/accounts/api';
 import signUp from '../index';
 import { actions } from '../../actions';
 
