@@ -2,7 +2,7 @@ import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import accountApi from '@/data/Account/api';
+import accountApi from '@/data/accounts/api';
 import authApi from '../api';
 import { actions, actionTypes } from '../actions';
 import { getAuthToken, setAuthToken, removeAuthToken } from '../localStorage';

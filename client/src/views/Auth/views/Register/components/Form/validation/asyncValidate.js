@@ -1,4 +1,4 @@
-import api from '@/views/Auth/components/Form/api';
+import api from '@/data/accounts/api';
 
 const asyncValidate = (values, dispatch, props, field) => {
   if (field === undefined) {
