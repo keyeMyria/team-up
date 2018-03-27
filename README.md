@@ -1,5 +1,8 @@
 # Team-up server repository
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fb85107416a0486a9b20d03a82465e44)](https://www.codacy.com/app/gradam/team-up?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=crew-up/team-up&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/crew-up/team-up.svg?branch=master)](https://travis-ci.org/crew-up/team-up)
+
 
 ## Useful links
 [Slack](https://team-up--hq.slack.com)

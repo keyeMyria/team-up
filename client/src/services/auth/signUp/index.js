@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import api from '@/data/Account/api';
+import api from '@/data/accounts/api';
 import { actions } from '../actions';
 
 function* signUp(userData) {

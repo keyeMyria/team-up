@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { authActions } from '@/services/auth';
 
+import ProtectedRoute from '@/components/ProtectedRoute';
 import Layout from '@/views/Layout';
-
-// TEMPORARY IMPORTS - TESTING
+import Start from '@/views/Start';
 import Auth from '@/views/Auth';
-import SignOut from '@/views/Layout/components/Header/Toolbar/NavItems/NavItem/SignOut';
+
+const TestComponent = () => <h1>Test It</h1>;
 
 class App extends Component {
   componentDidMount() {
@@ -18,26 +20,23 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <div id="main">
-          {!this.props.isAuthenticated && <Auth />}
-          {this.props.isAuthenticated && <SignOut />}
-        </div>
+        <Switch>
+          <Route exact path="/" component={Start} />
+          <Route exact path="/login" component={Auth} />
+          <ProtectedRoute path="/test" component={TestComponent} />
+          <Redirect to="/" />
+        </Switch>
       </Layout>
     );
   }
 }
 
 App.propTypes = {
-  tryAutoSignIn: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  tryAutoSignIn: PropTypes.func.isRequired
 };
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.authenticated
-});
 
 const mapDispatchToProps = dispatch => ({
   tryAutoSignIn: () => dispatch(authActions.autoSignIn())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

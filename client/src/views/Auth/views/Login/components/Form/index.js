@@ -1,18 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
+import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
-import '@/views/Auth/components/Form/styles.css'; // TODO: fix styles
-import InputField from '@/views/Auth/components/Form/InputField';
+import styles from '@/views/Auth/styles/form.css';
+import InputField from '@/views/Auth/components/InputField';
 import FacebookLogin from '../FacebookLogin';
 import { validate } from './validation';
+
+const cx = classNames.bind(styles);
 
 const LoginForm = (props) => {
   const { handleSubmit, pristine, submitting } = props;
   return (
     <form className={props.cssClass} onSubmit={handleSubmit}>
-      <div className="formHeader">
+      <div className={cx('formHeader')}>
         <div className="spacedRow">
           <Link to="/" onClick={props.onClose}>
             <span>Team</span>up
@@ -21,7 +24,7 @@ const LoginForm = (props) => {
         </div>
       </div>
 
-      <div className="formBody">
+      <div className={cx('formBody')}>
         <div className="subtitle">Sign in to Team-up</div>
 
         <Field
@@ -43,9 +46,9 @@ const LoginForm = (props) => {
         />
       </div>
 
-      <div className="formFooter">
+      <div className={cx('formFooter')}>
         <div className="spacedRow">
-          <div className="social-login">
+          <div className={cx('social-login')}>
             Sign in with:
             <FacebookLogin
               onSignIn={(payload) => {
@@ -56,7 +59,7 @@ const LoginForm = (props) => {
             <i className="fa fa-fw fa-google-plus fa-lg" />
           </div>
 
-          <div className="form-actions">
+          <div className={cx('form-actions')}>
             <button type="submit" className="btn btn-dark" disabled={pristine || submitting}>
               Sign In
             </button>

@@ -23,7 +23,7 @@ from rest_framework_swagger.views import get_swagger_view
 
 from common.permissions import is_admin
 
-from chatter.urls import urlpatterns as chatter_urlpatterns
+from chat.urls import urlpatterns as chatter_urlpatterns
 
 schema_view = user_passes_test(is_admin)(get_swagger_view(title='VeeU API'))
 

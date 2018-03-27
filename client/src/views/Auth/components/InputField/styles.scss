@@ -1,0 +1,43 @@
+$icon-padding: 50px;
+
+.formElement {
+  margin: var(--padding-medium-2) auto;
+}
+
+.inputField {
+  position: relative;
+
+  input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--padding-small-2) var(--padding-large-2) var(--padding-small-2) $icon-padding;
+
+    font-size: 1.05em;
+    font-weight: 300;
+
+    color: #666666;
+
+    &:focus {
+      box-shadow: 0 0 8px 0;
+      border-color: gray;
+    }
+  }
+
+  input:focus + label {
+    color: black;
+  }
+
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: $icon-padding;
+    height: 100%;
+    color: #666666;
+    margin: 0;
+  }
+}

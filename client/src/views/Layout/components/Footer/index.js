@@ -1,7 +1,10 @@
 import React from 'react';
+import classNames from 'classnames/bind';
 
-const Footer = props => {
-  return <div id="footer">Footer</div>;
-};
+import styles from './styles.css';
+
+const cx = classNames.bind(styles);
+
+const Footer = props => <footer className={cx('footer')}>Footer</footer>;
 
 export default Footer;
