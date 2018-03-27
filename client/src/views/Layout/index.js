@@ -1,4 +1,6 @@
-import React, {Component, Fragment} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import Header from './components/Header';
@@ -7,22 +9,25 @@ import styles from './styles.css';
 
 const cx = classNames.bind(styles);
 
-class Layout extends Component {
-  render() {
-    return (
-      <Fragment>
-        <div className={cx('container')}>
-          <div className={cx('header')}>
-            <Header/>
-          </div>
-          <main className={cx('content')}>{this.props.children}</main>
-          <div className={cx('footer')}>
-            <Footer/>
-          </div>
-        </div>
-      </Fragment>
-    );
-  }
-}
+const Layout = props => (
+  <div className={cx('container')}>
+    <div className={cx('header')}>
+      <Header isAuthenticated={props.isAuthenticated} />
+    </div>
+    <main className={cx('content')}>{props.children}</main>
+    <div className={cx('footer')}>
+      <Footer />
+    </div>
+  </div>
+);
 
-export default Layout;
+Layout.propTypes = {
+  children: PropTypes.element.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.authenticated
+});
+
+export default connect(mapStateToProps)(Layout);

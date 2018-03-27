@@ -1,7 +1,7 @@
+$icon-padding: 50px;
+
 .formElement {
-  position: relative;
-  width: 100%;
-  margin: 18px auto;
+  margin: var(--padding-medium-2) auto;
 }
 
 .inputField {
@@ -11,19 +11,16 @@
     display: block;
     box-sizing: border-box;
     width: 100%;
-    padding: 10px 30px 10px 50px; // variable for that left padding
+    padding: var(--padding-small-2) var(--padding-large-2) var(--padding-small-2) $icon-padding;
 
     font-size: 1.05em;
     font-weight: 300;
 
     color: #666666;
 
-    // border: 0;
-    // outline: 0;
-
     &:focus {
       box-shadow: 0 0 8px 0;
-      border-color: transparent;
+      border-color: gray;
     }
   }
 
@@ -38,7 +35,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 50px; // zmienna
+    width: $icon-padding;
     height: 100%;
     color: #666666;
     margin: 0;

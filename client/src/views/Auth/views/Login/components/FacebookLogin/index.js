@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FacebookLogin from 'react-facebook-login';
+import classNames from 'classnames/bind';
 
-import './styles.css';
+import styles from './styles.css';
+
+const cx = classNames.bind(styles);
 
 const FbLogin = props => (
   <FacebookLogin
@@ -12,7 +15,7 @@ const FbLogin = props => (
     // tag="button"
     // cssClass="loginBtn--facebook"
     tag="i"
-    cssClass="fa fa-facebook loginIcon--facebook"
+    cssClass={`fa fa-facebook ${cx('loginIcon--facebook')}`}
     textButton=""
     // onFailure?
   />

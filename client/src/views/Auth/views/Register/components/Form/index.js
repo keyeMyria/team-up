@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
+import classNames from 'classnames/bind';
 
-import '@/views/Auth/components/Form/styles.css'; // TODO: fix styles
-import InputField from '@/views/Auth/components/Form/InputField';
+import styles from '@/views/Auth/styles/form.css';
 
+import InputField from '@/views/Auth/components/InputField';
 import { validate, asyncValidate } from './validation';
+
+const cx = classNames.bind(styles);
 
 const RegisterForm = (props) => {
   const { handleSubmit, pristine, submitting } = props;
   return (
     <form className={props.cssClass} onSubmit={handleSubmit}>
-      <div className="formHeader">
+      <div className={cx('formHeader')}>
         <div className="spacedRow">
           <a href="#logo">
             <div>
@@ -23,8 +26,8 @@ const RegisterForm = (props) => {
         </div>
       </div>
 
-      <div className="formBody">
-        <div className="subtitle">Join Team-up</div>
+      <div className={cx('formBody')}>
+        <div className={cx('subtitle')}>Join Team-up</div>
 
         <Field
           type="email"
@@ -54,14 +57,12 @@ const RegisterForm = (props) => {
         />
       </div>
 
-      <div className="formFooter">
+      <div className={cx('formFooter')}>
         <div className="spacedRow">
-          <div className="left">
-            <button className="btn btn-dark" onClick={props.onLogin}>
-              Sign In?
-            </button>
-          </div>
-          <div className="right form-actions">
+          <button className="btn btn-dark" onClick={props.onLogin}>
+            Sign In?
+          </button>
+          <div className={cx('form-actions')}>
             <button type="submit" className="btn btn-dark" disabled={pristine || submitting}>
               Create an account
             </button>
@@ -74,6 +75,7 @@ const RegisterForm = (props) => {
 
 RegisterForm.propTypes = {
   onClose: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
   cssClass: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,

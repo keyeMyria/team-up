@@ -8,7 +8,9 @@ import store from './store';
 import history from './history';
 
 import App from './App';
-import './styles/index.css';
+import './styles/defaults.css';
+import './styles/constants.css';
+import './styles/classes.css';
 import './styles/colors.css';
 
 ReactDOM.render(

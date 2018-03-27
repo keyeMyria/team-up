@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
-import '@/views/Auth/components/Form/styles.css'; // TODO: clean styles
+import styles from '@/views/Auth/styles.css';
 import Form from './components/Form';
+
+const cx = classNames.bind(styles);
 
 const Login = props => (
   <Fragment>
     <Form
-      cssClass="authBox"
+      cssClass={cx('authBox')}
       onSubmit={(formData) => {
         props.signIn('team-up', formData); // CLOSE ON SUCCESS, ERROR ON FAILURE
       }}
@@ -18,7 +21,7 @@ const Login = props => (
 
     {/* TEMPORARY INLINE STYLING */}
     <div
-      className="authBox"
+      className={cx('authBox')}
       style={{
         position: 'relative',
         top: '20px',

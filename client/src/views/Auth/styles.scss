@@ -14,13 +14,20 @@
 
   // center this:
   position: fixed;
-  margin-top: -130px;
+  margin-top: -210px;
   margin-left: -181px;
   top: 50%;
   left: 50%;
 
-  // use %centered from /styles/placeholders
+  // use %centered from styles/placeholders
   // if not using animate.css animations on the modal
   // since centering with transform: translate blurs
   // text during animation
+}
+
+.authBox {
+  background-color: black;
+  color: white;
+  border: 1px solid rgba(39, 39, 39, 0.835);
+  box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.226);
 }

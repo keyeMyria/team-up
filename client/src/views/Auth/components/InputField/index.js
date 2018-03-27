@@ -1,6 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
-import './styles.css';
+import styles from './styles.css';
+
+const cx = classNames.bind(styles);
 
 const InputField = ({
   id,
@@ -10,9 +14,9 @@ const InputField = ({
   iconClass,
   meta: { asyncValidating, touched, error }
 }) => (
-  <div className="formElement">
+  <div className={cx('formElement')}>
     {/* className={asyncValidating ? 'async-validating' : ''} */}
-    <div className="inputField">
+    <div className={cx('inputField')}>
       <input
         {...input}
         type={type}
@@ -32,5 +36,15 @@ const InputField = ({
       )}
   </div>
 );
+
+InputField.propTypes = {
+  /* eslint-disable react/forbid-prop-types */
+  id: PropTypes.string.isRequired,
+  input: PropTypes.object.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  iconClass: PropTypes.string.isRequired,
+  meta: PropTypes.object.isRequired
+};
 
 export default InputField;
